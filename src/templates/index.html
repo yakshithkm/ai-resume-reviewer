@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Reviewer - Intelligent Resume Analysis</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- jsPDF library added for direct PDF generation (avoids html2canvas image errors) -->
+    <!-- Note: integrity attribute removed to prevent SRI mismatch blocking; use a pinned version URL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-file-alt"></i>
+                <span>AI Resume Reviewer</span>
+            </div>
+            <p class="tagline">Intelligent Resume Analysis powered by NLP & Machine Learning</p>
+            <div class="header-actions">
+                <label class="theme-switch" title="Toggle dark theme">
+                    <input type="checkbox" id="themeToggle" aria-label="Toggle dark theme">
+                    <span class="switch-slider">
+                        <i class="fas fa-sun switch-icon sun-icon"></i>
+                        <i class="fas fa-moon switch-icon moon-icon"></i>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Documents</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="upload-grid">
+                    <div class="upload-box" id="resumeBox" role="region" aria-label="Resume upload area">
+                        <div class="upload-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3>Resume</h3>
+                        <p class="file-info">PDF, DOCX, DOC, TXT, RTF (Max 10MB)</p>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.docx,.doc,.txt,.rtf" multiple required hidden aria-label="Resume file input">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('resume').click()" aria-label="Choose resume file(s)">
+                            <i class="fas fa-folder-open"></i> Choose File(s)
+                        </button>
+                        <div class="file-name" id="resumeFileName" aria-live="polite"></div>
+                        <p class="batch-hint" style="font-size: 0.85em; color: #888; margin-top: 8px;">
+                            <i class="fas fa-info-circle"></i> Select multiple resumes for batch processing
+                        </p>
+                    </div>
+                    
+                    <div class="upload-box" id="jobDescBox" role="region" aria-label="Job description upload area">
+                        <div class="upload-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3>Job Description</h3>
+                        <p class="file-info">PDF, DOCX, DOC, TXT, RTF (Max 10MB)</p>
+                        <input type="file" id="job_description" name="job_description" accept=".pdf,.docx,.doc,.txt,.rtf" required hidden aria-label="Job description file input">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('job_description').click()" aria-label="Choose job description file">
+                            <i class="fas fa-folder-open"></i> Choose File
+                        </button>
+                        <div class="file-name" id="jobDescFileName" aria-live="polite"></div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="analyze-btn" id="analyzeBtn">
+                    <i class="fas fa-chart-line"></i> Analyze Resume
+                </button>
+                
+                    <div class="upload-progress" id="uploadProgress" style="display:none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="progress-text" id="progressText">Uploading... 0%</p>
+                    </div>
+            </form>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="loading-spinner" style="display:none;">
+            <div class="spinner"></div>
+            <p>Analyzing your resume with AI...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error" class="error-message" style="display:none;" role="alert" aria-live="assertive">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <!-- Results Section -->
+        <div id="result" class="result-section" style="display:none;">
+                <div class="results-header">
+                    <h2><i class="fas fa-chart-bar"></i> Analysis Results</h2>
+                    <div class="export-buttons">
+                        <button class="export-btn" onclick="exportToPDF(this)">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </button>
+                        <button class="export-btn" onclick="exportToJSON()">
+                            <i class="fas fa-file-code"></i> Export JSON
+                        </button>
+                    </div>
+                </div>
+            
+            <!-- Overall Score Card -->
+            <div class="score-card">
+                <div class="score-circle" id="scoreCircle">
+                    <svg viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="90" class="score-bg"></circle>
+                        <circle cx="100" cy="100" r="90" class="score-fill" id="scoreFill"></circle>
+                    </svg>
+                    <div class="score-text">
+                        <span class="score-value" id="scoreValue">0%</span>
+                        <span class="score-label">Match Score</span>
+                    </div>
+                </div>
+                <div class="score-description">
+                    <h3>Resume-Job Match Analysis</h3>
+                    <p id="matchDescription">Your resume is being analyzed against the job requirements...</p>
+                </div>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="overview"><i class="fas fa-home"></i> Overview</button>
+                <button class="tab-btn" data-tab="skills"><i class="fas fa-cogs"></i> Skills</button>
+                <button class="tab-btn" data-tab="verbs"><i class="fas fa-bolt"></i> Action Verbs</button>
+                <button class="tab-btn" data-tab="suggestions"><i class="fas fa-lightbulb"></i> Suggestions</button>
+                <button class="tab-btn" data-tab="templates"><i class="fas fa-file-alt"></i> Templates</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-content active" id="overview-tab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 id="matchingCount">0</h4>
+                            <p>Matching Skills</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 id="missingCount">0</h4>
+                            <p>Missing Skills</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 id="verbCount">0</h4>
+                            <p>Verb Suggestions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="feedback-section">
+                    <h3><i class="fas fa-comment-dots"></i> Overall Feedback</h3>
+                    <div class="feedback-content" id="overallFeedback"></div>
+                </div>
+                
+                    <!-- Visualizations -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3><i class="fas fa-chart-pie"></i> Skills Distribution</h3>
+                            <canvas id="skillsChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3><i class="fas fa-chart-bar"></i> Match Analysis</h3>
+                            <canvas id="matchChart"></canvas>
+                        </div>
+                    </div>
+                
+                    <div class="chart-card-full">
+                        <h3><i class="fas fa-chart-line"></i> Key Terms Importance</h3>
+                            <div class="chart-scroll-wrapper">
+                                <canvas id="termsChart"></canvas>
+                            </div>
+                    </div>
+            </div>
+
+            <div class="tab-content" id="skills-tab">
+                    <div class="chart-card-full">
+                        <h3><i class="fas fa-radar"></i> Skills Match Radar</h3>
+                        <canvas id="skillsRadarChart"></canvas>
+                    </div>
+                
+                <div class="skills-container">
+                    <div class="skills-column">
+                        <h3><i class="fas fa-check-circle text-success"></i> Matching Skills</h3>
+                        <div id="matchingSkills" class="skills-list"></div>
+                    </div>
+                    <div class="skills-column">
+                        <h3><i class="fas fa-times-circle text-danger"></i> Missing Skills</h3>
+                        <div id="missingSkills" class="skills-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="verbs-tab">
+                <div class="verbs-container" id="verbsContainer"></div>
+            </div>
+
+            <div class="tab-content" id="suggestions-tab">
+                <div class="suggestions-header">
+                    <h3><i class="fas fa-lightbulb"></i> Suggestions</h3>
+                    <button class="copy-all-btn" id="copySuggestionsBtn" onclick="copySuggestions()" style="display: none;">
+                        <i class="fas fa-copy"></i> Copy All
+                    </button>
+                </div>
+                <div class="suggestions-container" id="suggestionsContainer"></div>
+            </div>
+
+            <div class="tab-content" id="templates-tab">
+                <div class="template-recommendations" id="templateRecommendations">
+                    <h3><i class="fas fa-file-alt"></i> Resume Template & ATS Tips</h3>
+                    <div id="templateContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 AI Resume Reviewer | Powered by NLP & Machine Learning</p>
+    </footer>
+
+    <script>
+        // Register Chart.js datalabels plugin
+        if (typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') {
+            Chart.register(ChartDataLabels);
+        }
+        
+        // Theme management with chart re-rendering
+        (function() {
+            const body = document.body;
+            
+            // Debounce helper for theme
+            const debouncedRenderCharts = debounce(() => {
+                if (window.currentAnalysisData) {
+                    renderCharts(window.currentAnalysisData);
+                }
+            }, 150);
+            
+            // Theme toggle handler
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    body.classList.add('dark-theme');
+                } else {
+                    body.classList.remove('dark-theme');
+                }
+                // Debounced chart updates if charts are rendered
+                debouncedRenderCharts();
+            };
+
+            // Initialize from storage or OS preference
+            try {
+                const saved = localStorage.getItem('ai_resume_theme');
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const isDark = saved === 'dark' || (!saved && prefersDark);
+                applyTheme(isDark);
+            } catch (e) { 
+                console.warn('Failed to load theme preference:', e);
+            }
+
+            // Set up toggle after DOM ready
+            document.addEventListener('DOMContentLoaded', () => {
+                const toggle = document.getElementById('themeToggle');
+                if (!toggle) return;
+                
+                // Sync checkbox with current theme
+                const isDark = body.classList.contains('dark-theme');
+                toggle.checked = isDark;
+                
+                // Handle toggle
+                toggle.addEventListener('change', (e) => {
+                    const newIsDark = e.target.checked;
+                    applyTheme(newIsDark);
+                    try { 
+                        localStorage.setItem('ai_resume_theme', newIsDark ? 'dark' : 'light'); 
+                    } catch (err) { 
+                        console.warn('Failed to save theme preference:', err);
+                    }
+                });
+            });
+        })();
+
+        // Theme-aware color palette
+        function getThemeColors() {
+            const isDark = document.body.classList.contains('dark-theme');
+            
+            if (isDark) {
+                return {
+                    primary: 'rgba(96, 165, 250, 0.8)',
+                    primaryBorder: 'rgba(96, 165, 250, 1)',
+                    secondary: 'rgba(139, 92, 246, 0.8)',
+                    secondaryBorder: 'rgba(139, 92, 246, 1)',
+                    success: 'rgba(52, 211, 153, 0.8)',
+                    successBorder: 'rgba(52, 211, 153, 1)',
+                    warning: 'rgba(251, 191, 36, 0.8)',
+                    warningBorder: 'rgba(251, 191, 36, 1)',
+                    danger: 'rgba(251, 113, 133, 0.8)',
+                    dangerBorder: 'rgba(251, 113, 133, 1)',
+                    text: '#e6eef8',
+                    grid: 'rgba(255, 255, 255, 0.1)',
+                    tooltipBg: 'rgba(15, 23, 42, 0.95)',
+                    tooltipBorder: 'rgba(96, 165, 250, 0.5)'
+                };
+            } else {
+                return {
+                    primary: 'rgba(99, 102, 241, 0.8)',
+                    primaryBorder: 'rgba(99, 102, 241, 1)',
+                    secondary: 'rgba(139, 92, 246, 0.8)',
+                    secondaryBorder: 'rgba(139, 92, 246, 1)',
+                    success: 'rgba(16, 185, 129, 0.8)',
+                    successBorder: 'rgba(16, 185, 129, 1)',
+                    warning: 'rgba(245, 158, 11, 0.8)',
+                    warningBorder: 'rgba(245, 158, 11, 1)',
+                    danger: 'rgba(239, 68, 68, 0.8)',
+                    dangerBorder: 'rgba(239, 68, 68, 1)',
+                    text: '#1f2937',
+                    grid: 'rgba(0, 0, 0, 0.1)',
+                    tooltipBg: 'rgba(255, 255, 255, 0.95)',
+                    tooltipBorder: 'rgba(99, 102, 241, 0.5)'
+                };
+            }
+        }
+
+        // File input handling
+        document.getElementById('resume').addEventListener('change', function(e) {
+            const fileCount = e.target.files.length;
+            if (fileCount === 0) {
+                document.getElementById('resumeFileName').textContent = '';
+                document.getElementById('resumeBox').classList.remove('file-selected');
+            } else if (fileCount === 1) {
+                document.getElementById('resumeFileName').textContent = e.target.files[0].name;
+                document.getElementById('resumeBox').classList.add('file-selected');
+            } else {
+                document.getElementById('resumeFileName').textContent = `${fileCount} resumes selected`;
+                document.getElementById('resumeBox').classList.add('file-selected');
+            }
+        });
+
+        document.getElementById('job_description').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || '';
+            document.getElementById('jobDescFileName').textContent = fileName;
+            document.getElementById('jobDescBox').classList.add('file-selected');
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId + '-tab').classList.add('active');
+            });
+        });
+
+        // Form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const loadingDiv = document.getElementById('loading');
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+                const progressDiv = document.getElementById('uploadProgress');
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+            
+                // Show progress bar
+                progressDiv.style.display = 'block';
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            analyzeBtn.disabled = true;
+            
+                // Simulate upload progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = `Uploading... ${Math.round(progress)}%`;
+                }, 200);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                    clearInterval(progressInterval);
+                    progressFill.style.width = '100%';
+                    progressText.textContent = 'Processing... 100%';
+                
+                    // Show loading spinner with timeout warning
+                    progressDiv.style.display = 'none';
+                    loadingDiv.style.display = 'block';
+                    
+                    // Add timeout warning for long operations
+                    const warningTimeout = setTimeout(() => {
+                        const loadingText = loadingDiv.querySelector('p');
+                        if (loadingText) {
+                            loadingText.textContent = 'Analysis in progress... Large documents may take up to 30 seconds.';
+                        }
+                    }, 5000);
+                
+                const data = await response.json();
+                
+                // Clear the warning timeout
+                clearTimeout(warningTimeout);
+                
+                if (response.ok) {
+                    displayResults(data.analysis);
+                    loadingDiv.style.display = 'none';
+                    resultDiv.style.display = 'block';
+                    
+                    // Scroll to results
+                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    // Handle rate limiting
+                    if (response.status === 429) {
+                        throw new Error('Too many requests. Please wait a moment and try again.');
+                    }
+                    throw new Error(data.error || 'Upload failed');
+                }
+            } catch (error) {
+                    clearInterval(progressInterval);
+                    progressDiv.style.display = 'none';
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'flex';
+                
+                // Display detailed error message if available
+                let errorMessage = error.message;
+                try {
+                    const response = await error.response?.json();
+                    if (response?.details) {
+                        errorMessage = response.details.message || error.message;
+                        if (response.details.suggestion) {
+                            errorMessage += `\n\nSuggestion: ${response.details.suggestion}`;
+                        }
+                    }
+                } catch (e) {
+                    // Use default error message
+                }
+                
+                document.getElementById('errorText').textContent = errorMessage;
+            } finally {
+                analyzeBtn.disabled = false;
+                    // Reset progress
+                    setTimeout(() => {
+                        progressFill.style.width = '0%';
+                        progressText.textContent = 'Uploading... 0%';
+                    }, 1000);
+            }
+        });
+
+        function displayResults(analysis) {
+            // Display overall score
+            const similarity = analysis.similarity ?? 0;
+            displayScore(similarity);
+            
+            // Update stats
+            const matchingSkills = analysis.matching_skills || [];
+            const missingSkills = analysis.missing_skills || [];
+            const verbEnhancements = analysis.verb_enhancements || [];
+            
+            document.getElementById('matchingCount').textContent = matchingSkills.length;
+            document.getElementById('missingCount').textContent = missingSkills.length;
+            document.getElementById('verbCount').textContent = verbEnhancements.filter(v => v.suggestions && v.suggestions.length > 0).length;
+            
+            // Display match description
+            const description = getMatchDescription(similarity);
+            document.getElementById('matchDescription').textContent = description;
+            
+            // Display overall feedback
+            const feedback = analysis.feedback || {};
+            document.getElementById('overallFeedback').innerHTML = `
+                <p class="feedback-text">${feedback.overall || 'Analysis completed successfully.'}</p>
+            `;
+            
+            // Display matching skills
+            displaySkills('matchingSkills', matchingSkills, 'success');
+            
+            // Display missing skills
+            displaySkills('missingSkills', missingSkills, 'warning');
+            
+                // Render charts
+                renderCharts(analysis);
+            
+            // Display verb suggestions
+            displayVerbSuggestions(verbEnhancements);
+            
+            // Display suggestions
+            displaySuggestions(feedback.suggestions || []);
+            
+            // Display template recommendations
+            if (analysis.template_recommendation || analysis.ats_tips) {
+                displayTemplateRecommendations(analysis);
+            }
+        }
+
+        function displayScore(score) {
+            const scoreValue = Math.round(score);
+            document.getElementById('scoreValue').textContent = scoreValue + '%';
+            
+            // Animate score circle
+            const circumference = 2 * Math.PI * 90;
+            const offset = circumference - (scoreValue / 100) * circumference;
+            const scoreFill = document.getElementById('scoreFill');
+            scoreFill.style.strokeDasharray = circumference;
+            scoreFill.style.strokeDashoffset = circumference;
+            
+            setTimeout(() => {
+                scoreFill.style.strokeDashoffset = offset;
+            }, 100);
+            
+            // Set color based on score
+            if (scoreValue >= 75) {
+                scoreFill.style.stroke = '#10b981';
+            } else if (scoreValue >= 50) {
+                scoreFill.style.stroke = '#f59e0b';
+            } else {
+                scoreFill.style.stroke = '#ef4444';
+            }
+        }
+
+        function getMatchDescription(score) {
+            if (score >= 80) {
+                return 'Excellent match! Your resume aligns very well with the job requirements.';
+            } else if (score >= 60) {
+                return 'Good match! Consider adding a few missing skills to strengthen your application.';
+            } else if (score >= 40) {
+                return 'Moderate match. Review the missing skills and update your resume accordingly.';
+            } else {
+                return 'Low match. Significant improvements needed to match job requirements.';
+            }
+        }
+
+        function displaySkills(containerId, skills, type) {
+            const container = document.getElementById(containerId);
+            
+            if (skills.length === 0) {
+                container.innerHTML = '<p class="no-items">No skills found</p>';
+                return;
+            }
+            
+            const html = skills.map(skill => `
+                <div class="skill-badge ${type}">
+                    <i class="fas fa-${type === 'success' ? 'check' : 'times'}"></i>
+                    <span>${skill}</span>
+                </div>
+            `).join('');
+            
+            container.innerHTML = html;
+        }
+
+        function displayVerbSuggestions(verbEnhancements) {
+            const container = document.getElementById('verbsContainer');
+            
+            if (verbEnhancements.length === 0) {
+                container.innerHTML = '<p class="no-items">No verb suggestions available</p>';
+                return;
+            }
+            
+            const weakVerbs = verbEnhancements.filter(v => v.has_verb && v.strength === 'weak' && v.suggestions && v.suggestions.length > 0);
+            const noVerbs = verbEnhancements.filter(v => !v.has_verb);
+            
+            let html = '';
+            
+            if (weakVerbs.length > 0) {
+                html += '<div class="verb-section"><h3><i class="fas fa-arrows-alt"></i> Weak Verbs to Strengthen</h3>';
+                html += weakVerbs.slice(0, 10).map(v => `
+                    <div class="verb-item">
+                        <div class="verb-original">
+                            <span class="verb-label">Original:</span>
+                            <p>${v.original}</p>
+                        </div>
+                        <div class="verb-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="verb-suggestions">
+                            <span class="verb-label">Suggestions:</span>
+                            <div class="suggestion-badges">
+                                ${v.suggestions.map(s => `<span class="suggestion-badge">${s}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                html += '</div>';
+            }
+            
+            if (noVerbs.length > 0) {
+                html += '<div class="verb-section"><h3><i class="fas fa-plus-circle"></i> Add Action Verbs</h3>';
+                html += noVerbs.slice(0, 5).map(v => `
+                    <div class="verb-item warning">
+                        <div class="verb-original">
+                            <span class="verb-label">Missing verb:</span>
+                            <p>${v.original}</p>
+                        </div>
+                    </div>
+                `).join('');
+                html += '</div>';
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Copy suggestions to clipboard
+        function copySuggestions() {
+            const list = (window.cleanedSuggestions && window.cleanedSuggestions.length)
+                ? window.cleanedSuggestions
+                : (window.currentSuggestions || []);
+            if (!list.length) return;
+            
+            const text = list.map((s, i) => `${i + 1}. ${s}`).join('\n\n');
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copySuggestionsBtn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy to clipboard');
+                console.error('Copy failed:', err);
+            });
+        }
+
+        // Display template recommendations
+        function displayTemplateRecommendations(analysis) {
+            const container = document.getElementById('templateContent');
+            if (!container) return;
+            
+            let html = '';
+            
+            // Format analysis section
+            if (analysis.format_analysis) {
+                const fmt = analysis.format_analysis;
+                html += `
+                    <div class="format-analysis card" style="margin-bottom: 24px;">
+                        <h4><i class="fas fa-file-alt"></i> Resume Format Score: ${fmt.format_score}/100</h4>
+                        <p style="color: #888; margin: 8px 0;">Word count: ${fmt.word_count}</p>
+                        
+                        ${fmt.strengths && fmt.strengths.length > 0 ? `
+                            <div style="margin-top: 16px;">
+                                <strong style="color: #10b981;"><i class="fas fa-check-circle"></i> Strengths:</strong>
+                                <ul style="margin: 8px 0; padding-left: 24px;">
+                                    ${fmt.strengths.map(s => `<li>${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        
+                        ${fmt.issues && fmt.issues.length > 0 ? `
+                            <div style="margin-top: 16px;">
+                                <strong style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Issues Found:</strong>
+                                <ul style="margin: 8px 0; padding-left: 24px;">
+                                    ${fmt.issues.map(i => `<li>${i}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        
+                        ${fmt.suggestions && fmt.suggestions.length > 0 ? `
+                            <div style="margin-top: 16px;">
+                                <strong style="color: #6366f1;"><i class="fas fa-lightbulb"></i> Format Improvements:</strong>
+                                <ul style="margin: 8px 0; padding-left: 24px;">
+                                    ${fmt.suggestions.map(s => `<li>${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            
+            // Template recommendation
+            if (analysis.template_recommendation) {
+                const rec = analysis.template_recommendation.recommended_template;
+                html += `
+                    <div class="template-card card" style="margin-bottom: 24px; border-left: 4px solid #6366f1;">
+                        <h4><i class="fas fa-star"></i> Recommended Template: ${rec.name}</h4>
+                        <p style="margin: 8px 0; color: #888;">${rec.description}</p>
+                        <p style="margin: 8px 0;"><strong>ATS Score:</strong> ${rec.ats_score}/100</p>
+                        <p style="margin: 8px 0;"><strong>Best for:</strong> ${rec.recommended_for.join(', ')}</p>
+                        
+                        <div style="margin-top: 16px;">
+                            <strong><i class="fas fa-list"></i> Key Features:</strong>
+                            <ul style="margin: 8px 0; padding-left: 24px;">
+                                ${rec.features.map(f => `<li>${f}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        ${rec.priority_advice && rec.priority_advice.length > 0 ? `
+                            <div style="margin-top: 16px; padding: 12px; background: rgba(99, 102, 241, 0.1); border-radius: 8px;">
+                                <strong style="color: #6366f1;"><i class="fas fa-exclamation-circle"></i> Priority Actions:</strong>
+                                <ul style="margin: 8px 0; padding-left: 24px;">
+                                    ${rec.priority_advice.map(a => `<li>${a}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            
+            // ATS Tips
+            if (analysis.ats_tips && analysis.ats_tips.length > 0) {
+                html += `
+                    <div class="ats-tips card" style="background: rgba(16, 185, 129, 0.05);">
+                        <h4><i class="fas fa-robot"></i> ATS-Friendly Formatting Tips</h4>
+                        <p style="color: #888; margin: 8px 0 16px 0;">Make sure your resume can be parsed by Applicant Tracking Systems</p>
+                        <ul style="padding-left: 24px;">
+                            ${analysis.ats_tips.map(tip => `<li style="margin: 8px 0;">${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        // Debounce helper
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function displaySuggestions(rawSuggestions) {
+            const container = document.getElementById('suggestionsContainer');
+            const copyBtn = document.getElementById('copySuggestionsBtn');
+
+            const suggestions = Array.isArray(rawSuggestions) ? rawSuggestions : [];
+            if (!suggestions.length) {
+                container.innerHTML = '<p class="no-items">No specific suggestions at this time</p>';
+                if (copyBtn) copyBtn.style.display = 'none';
+                window.currentSuggestions = [];
+                window.cleanedSuggestions = [];
+                return;
+            }
+
+            // Helpers
+            const cleanSuggestionText = (text) => {
+                if (!text) return '';
+                let t = String(text);
+                // Remove id markers like "cid: 127"
+                t = t.replace(/\bcid\s*:\s*\d+\b/gi, '');
+                // Remove stray "cid:" labels without numbers
+                t = t.replace(/\bcid\s*:\s*/gi, '');
+                // Remove loud section prefixes (PROGRAMMING:, FRAMEWORK:, TOOL:, KEY:, etc.)
+                t = t.replace(/\b(PROGRAMMING|FRAMEWORK|TOOL|KEY|QUALIFICATIONS|RESPONSIBILITIES|PROBLEM|DESCRIPTION)\s*:\s*/gi, '');
+                // Normalize punctuation spacing
+                t = t.replace(/\s*,\s*/g, ', ')
+                     .replace(/\s*\.\s*/g, '. ')
+                     .replace(/,\s*,/g, ', ')
+                     .replace(/,\s*\./g, '.')
+                     .replace(/\s{2,}/g, ' ')
+                     .replace(/\s*\(\s*\)\s*/g, '')
+                     .trim();
+                // Tidy up repeated words like ", ," or trailing commas
+                t = t.replace(/\s*,\s*$/g, '').replace(/^,\s*/g, '');
+                return t;
+            };
+
+            const classify = (text) => {
+                const lower = text.toLowerCase();
+                if (lower.startsWith('add missing')) return { type: 'warning', label: 'Add Missing', icon: 'fa-plus-circle' };
+                if (lower.startsWith('emphasize')) return { type: 'info', label: 'Emphasize', icon: 'fa-highlighter' };
+                if (lower.startsWith('consider')) return { type: 'tip', label: 'Consider', icon: 'fa-lightbulb' };
+                return { type: 'note', label: 'Suggestion', icon: 'fa-comment-dots' };
+            };
+
+            const extractChips = (text) => {
+                if (!text) return [];
+                const colonIdx = text.indexOf(':');
+                const tail = colonIdx >= 0 ? text.slice(colonIdx + 1) : text;
+                let parts = tail.split(',').map(s => s.trim()).filter(Boolean);
+                // Remove generic prefixes on each part
+                parts = parts.map(p => p.replace(/^(PROGRAMMING|FRAMEWORK|TOOL)\s*/i, '').trim());
+                // Deduplicate and filter short tokens
+                const seen = new Set();
+                const chips = [];
+                for (const p of parts) {
+                    const key = p.toLowerCase().replace(/[^a-z0-9]+/g, '');
+                    if (p.length > 2 && !seen.has(key)) {
+                        seen.add(key);
+                        chips.push(p);
+                    }
+                    if (chips.length >= 12) break;
+                }
+                return chips;
+            };
+
+            // Build HTML
+            const cleaned = suggestions.map(cleanSuggestionText);
+            const html = cleaned.map((text, index) => {
+                const meta = classify(text);
+                const chips = extractChips(text);
+                const shortText = text.length > 240 ? text.slice(0, 240).trim() + '…' : text;
+                const hasMore = text.length > 240;
+                return `
+                <div class="suggestion-item type-${meta.type}">
+                    <div class="suggestion-number">${index + 1}</div>
+                    <button class="suggestion-copy copy-floating" title="Copy this suggestion" onclick="copySingleSuggestion(${index})"><i class="fas fa-copy"></i></button>
+                    <div class="suggestion-content">
+                        <div class="suggestion-header-row">
+                            <span class="suggestion-type"><i class="fas ${meta.icon}"></i> ${meta.label}</span>
+                        </div>
+                        <p id="suggestion-text-${index}" class="suggestion-text${hasMore ? ' clamped' : ''}" data-full="${text.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${shortText.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</p>
+                        ${chips.length >= 3 ? `<div class="suggestion-chips">${chips.slice(0,12).map(c => `<span class=\"chip\">${c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span>`).join('')}</div>` : ''}
+                        ${hasMore ? `<button class="link-btn show-more" id="suggestion-more-${index}" onclick="toggleSuggestionExpand(${index})">Show more</button>` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = html;
+            if (copyBtn) copyBtn.style.display = 'block';
+
+            // Store for clipboard actions
+            window.currentSuggestions = suggestions;
+            window.cleanedSuggestions = cleaned;
+        }
+
+        // Copy a single suggestion
+        function copySingleSuggestion(idx) {
+            const list = window.cleanedSuggestions || window.currentSuggestions || [];
+            const text = list[idx] || '';
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById(`suggestion-more-${idx}`) || document.getElementById('copySuggestionsBtn');
+                if (!btn) return;
+                const original = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = original; }, 1200);
+            });
+        }
+
+        // Expand/collapse a long suggestion
+        function toggleSuggestionExpand(idx) {
+            const p = document.getElementById(`suggestion-text-${idx}`);
+            const toggle = document.getElementById(`suggestion-more-${idx}`);
+            if (!p || !toggle) return;
+            const isClamped = p.classList.contains('clamped');
+            if (isClamped) {
+                p.classList.remove('clamped');
+                p.textContent = p.getAttribute('data-full') || p.textContent;
+                toggle.textContent = 'Show less';
+            } else {
+                const full = p.getAttribute('data-full') || '';
+                const shortText = full.length > 240 ? full.slice(0, 240).trim() + '…' : full;
+                p.classList.add('clamped');
+                p.textContent = shortText;
+                toggle.textContent = 'Show more';
+            }
+        }
+
+            // Chart.js instances
+            let skillsChartInstance = null;
+            let matchChartInstance = null;
+            let termsChartInstance = null;
+            let radarChartInstance = null;
+                // Use a single global store so theme/resize handlers can re-render charts
+                window.currentAnalysisData = window.currentAnalysisData || null;
+
+            // Re-render charts on resize with debounce
+            const handleResize = debounce(() => {
+                if (window.currentAnalysisData) {
+                    renderCharts(window.currentAnalysisData);
+                }
+            }, 300);
+
+            window.addEventListener('resize', handleResize);
+            window.addEventListener('orientationchange', handleResize);
+
+        function renderCharts(analysis) {
+            // Persist latest analysis globally for theme/responsive re-renders
+            window.currentAnalysisData = analysis;
+                const matchingSkills = analysis.matching_skills || [];
+                const missingSkills = analysis.missing_skills || [];
+                const feedback = analysis.feedback || {};
+                // key_terms comes as an object: { resume: [...], job: [...] }
+                const keyTerms = feedback.key_terms || { resume: [], job: [] };
+            
+                // Skills Distribution Pie Chart
+                renderSkillsChart(matchingSkills.length, missingSkills.length);
+            
+                // Match Analysis Bar Chart
+                renderMatchChart(analysis.similarity || 0);
+            
+                // Key Terms Chart
+                renderTermsChart(keyTerms);
+            
+                    // Skills Radar Chart
+                    renderSkillsRadar(matchingSkills, missingSkills);
+            }
+
+            function renderSkillsChart(matching, missing) {
+                const ctx = document.getElementById('skillsChart');
+                const colors = getThemeColors();
+            
+                // Destroy previous chart if exists
+                if (skillsChartInstance) {
+                    skillsChartInstance.destroy();
+                }
+            
+                skillsChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Matching Skills', 'Missing Skills'],
+                        datasets: [{
+                            data: [matching, missing],
+                            backgroundColor: [
+                                colors.success,
+                                colors.warning
+                            ],
+                            borderColor: [
+                                colors.successBorder,
+                                colors.warningBorder
+                            ],
+                            borderWidth: 2,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        layout: { padding: 10 },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 15,
+                                    font: {
+                                        size: 13,
+                                        weight: '600'
+                                    },
+                                    color: colors.text
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: colors.tooltipBg,
+                                borderColor: colors.tooltipBorder,
+                                borderWidth: 1,
+                                titleColor: colors.text,
+                                bodyColor: colors.text,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.parsed || 0;
+                                        const total = matching + missing;
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: (ctx) => document.body.classList.contains('dark-theme') ? '#ffffff' : '#000000',
+                                font: ctx => ({ size: (window.innerWidth < 600 ? 11 : 13), weight: '700' }),
+                                formatter: (val, ctx2) => {
+                                    const total = matching + missing;
+                                    if (!total) return '0%';
+                                    const pct = (val / total * 100).toFixed(0) + '%';
+                                    return pct;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function renderMatchChart(similarity) {
+                const ctx = document.getElementById('matchChart');
+                const colors = getThemeColors();
+            
+                if (matchChartInstance) {
+                    matchChartInstance.destroy();
+                }
+            
+                const maxScore = 100;
+                const yourScore = Math.round(similarity);
+                const gap = maxScore - yourScore;
+            
+                matchChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Your Score', 'Gap to Perfect'],
+                        datasets: [{
+                            label: 'Percentage',
+                            data: [yourScore, gap],
+                            backgroundColor: [
+                                yourScore >= 75 ? colors.success : 
+                                yourScore >= 50 ? colors.warning : 
+                                colors.danger,
+                                'rgba(229, 231, 235, 0.3)'
+                            ],
+                            borderColor: [
+                                yourScore >= 75 ? colors.successBorder : 
+                                yourScore >= 50 ? colors.warningBorder : 
+                                colors.dangerBorder,
+                                colors.grid
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        layout: { padding: 10 },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: colors.text,
+                                    callback: function(value) {
+                                        return value + '%';
+                                    },
+                                    font: { size: (window.innerWidth < 600 ? 10 : 12) }
+                                },
+                                grid: {
+                                    color: colors.grid
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: colors.text,
+                                    font: { size: (window.innerWidth < 600 ? 10 : 12), weight: '600' }
+                                },
+                                grid: {
+                                    color: colors.grid
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: colors.tooltipBg,
+                                borderColor: colors.tooltipBorder,
+                                borderWidth: 1,
+                                titleColor: colors.text,
+                                bodyColor: colors.text,
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.parsed.x + '%';
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: (ctx) => document.body.classList.contains('dark-theme') ? '#ffffff' : '#000000',
+                                anchor: 'end',
+                                align: 'right',
+                                clamp: true,
+                                font: { size: (window.innerWidth < 600 ? 11 : 12), weight: '700' },
+                                formatter: (val, ctx2) => val + '%'
+                            }
+                        }
+                    }
+                });
+            }
+
+            function renderTermsChart(keyTermsData) {
+                const ctx = document.getElementById('termsChart');
+                const colors = getThemeColors();
+            
+                if (termsChartInstance) {
+                    termsChartInstance.destroy();
+                }
+            
+                // Normalize input: backend provides { resume: [...], job: [...] }
+                let jobTerms = [];
+                let resumeTerms = [];
+                
+                if (Array.isArray(keyTermsData)) {
+                    jobTerms = keyTermsData;
+                } else if (keyTermsData && typeof keyTermsData === 'object') {
+                    jobTerms = Array.isArray(keyTermsData.job) ? keyTermsData.job : [];
+                    resumeTerms = Array.isArray(keyTermsData.resume) ? keyTermsData.resume : [];
+                }
+                
+                // If no key terms, show a placeholder to avoid empty chart
+                if (!jobTerms || jobTerms.length === 0) {
+                    jobTerms = ['No key terms available'];
+                }
+                
+                // Take top 10 job terms
+                const labels = jobTerms.slice(0, 10);
+                // Synthetic importance scores: descending values
+                const scores = labels.map((_, index) => 100 - (index * Math.max(8, Math.floor(80 / Math.max(labels.length - 1, 1)))));
+                // Presence in resume (for potential second dataset)
+                const present = labels.map(term => (resumeTerms.includes(term) ? 100 : 0));
+            
+                termsChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Job Term Importance',
+                                data: scores,
+                                backgroundColor: colors.primary,
+                                borderColor: colors.primaryBorder,
+                                borderWidth: 2,
+                                maxBarThickness: 38
+                            },
+                            {
+                                label: 'Mentioned in Resume',
+                                data: present,
+                                backgroundColor: colors.success,
+                                borderColor: colors.successBorder,
+                                borderWidth: 2,
+                                maxBarThickness: 38
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: { padding: { top: 10, right: 10, left: 4, bottom: 4 } },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: colors.text,
+                                    callback: function(value) {
+                                        return value + '%';
+                                    },
+                                    font: { size: (window.innerWidth < 600 ? 9 : 11) }
+                                },
+                                grid: {
+                                    color: colors.grid
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: colors.text,
+                                    font: { size: (window.innerWidth < 600 ? 9 : 11), weight: '600' },
+                                    maxRotation: 40,
+                                    minRotation: 0
+                                },
+                                grid: {
+                                    color: colors.grid
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: colors.text,
+                                    boxWidth: 18,
+                                    boxHeight: 10,
+                                    padding: (window.innerWidth < 600 ? 8 : 12),
+                                    font: { size: (window.innerWidth < 600 ? 10 : 11), weight: '600' }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: colors.tooltipBg,
+                                borderColor: colors.tooltipBorder,
+                                borderWidth: 1,
+                                titleColor: colors.text,
+                                bodyColor: colors.text,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.dataset.label || '';
+                                        const value = context.parsed.y;
+                                        return `${label}: ${value}%`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: (ctx) => document.body.classList.contains('dark-theme') ? '#ffffff' : '#000000',
+                                anchor: 'end',
+                                align: 'top',
+                                font: { size: (window.innerWidth < 600 ? 9 : 11), weight: '700' },
+                                formatter: (val) => val + '%',
+                                clip: true
+                            }
+                        }
+                    }
+                });
+
+                // Tap-to-highlight interaction
+                try {
+                    const canvasEl = ctx;
+                    canvasEl.onclick = (evt) => {
+                        const points = termsChartInstance.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+                        if (!points.length) {
+                            // reset
+                            termsChartInstance.setDatasetVisibility(0, true);
+                            termsChartInstance.setDatasetVisibility(1, true);
+                            termsChartInstance.update();
+                            return;
+                        }
+                        const [{ datasetIndex, index }] = points;
+                        // Dim non-selected bars by toggling visibility pattern
+                        for (let di = 0; di < termsChartInstance.data.datasets.length; di++) {
+                            if (di !== datasetIndex) {
+                                termsChartInstance.setDatasetVisibility(di, false);
+                            } else {
+                                termsChartInstance.setDatasetVisibility(di, true);
+                            }
+                        }
+                        termsChartInstance.update();
+                    };
+                } catch (e) { /* ignore */ }
+            }
+
+                function renderSkillsRadar(matchingSkills, missingSkills) {
+                    const ctx = document.getElementById('skillsRadarChart');
+                    const colors = getThemeColors();
+            
+                    if (radarChartInstance) {
+                        radarChartInstance.destroy();
+                    }
+            
+                    // Categorize skills into common tech categories
+                    const categories = {
+                        'Programming': ['python', 'java', 'javascript', 'typescript', 'c++', 'c#', 'ruby', 'go', 'rust', 'php'],
+                        'Frameworks': ['react', 'angular', 'vue', 'django', 'flask', 'spring', 'express', 'node'],
+                        'Databases': ['sql', 'mysql', 'postgresql', 'mongodb', 'redis', 'oracle', 'nosql'],
+                        'Cloud': ['aws', 'azure', 'gcp', 'docker', 'kubernetes', 'terraform'],
+                        'Tools': ['git', 'jenkins', 'jira', 'agile', 'scrum', 'ci/cd'],
+                        'Other': []
+                    };
+            
+                    const allSkills = [...matchingSkills, ...missingSkills];
+                    const categoryScores = {};
+            
+                    // Initialize scores
+                    Object.keys(categories).forEach(cat => categoryScores[cat] = { matching: 0, total: 0 });
+            
+                    // Categorize and count skills
+                    allSkills.forEach(skill => {
+                        const skillLower = skill.toLowerCase();
+                        let categorized = false;
+                
+                        for (const [category, keywords] of Object.entries(categories)) {
+                            if (keywords.some(keyword => skillLower.includes(keyword))) {
+                                categoryScores[category].total++;
+                                if (matchingSkills.includes(skill)) {
+                                    categoryScores[category].matching++;
+                                }
+                                categorized = true;
+                                break;
+                            }
+                        }
+                
+                        if (!categorized) {
+                            categoryScores['Other'].total++;
+                            if (matchingSkills.includes(skill)) {
+                                categoryScores['Other'].matching++;
+                            }
+                        }
+                    });
+            
+                    // Calculate percentages
+                    const labels = [];
+                    const matchingData = [];
+                    const totalData = [];
+            
+                    Object.entries(categoryScores).forEach(([category, scores]) => {
+                        if (scores.total > 0) {
+                            labels.push(category);
+                            matchingData.push(scores.total > 0 ? (scores.matching / scores.total * 100).toFixed(1) : 0);
+                            totalData.push(100);
+                        }
+                    });
+            
+                    radarChartInstance = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Your Skills',
+                                    data: matchingData,
+                                    borderColor: colors.primaryBorder,
+                                    backgroundColor: colors.primary.replace('0.8','0.15'),
+                                    borderWidth: 2,
+                                    pointBackgroundColor: colors.primaryBorder,
+                                    pointBorderColor: '#fff',
+                                    pointHoverBackgroundColor: '#fff',
+                                    pointHoverBorderColor: colors.primaryBorder
+                                },
+                                {
+                                    label: 'Required Skills',
+                                    data: totalData,
+                                    backgroundColor: colors.success.replace('0.8', '0.1'),
+                                    borderColor: colors.successBorder,
+                                    borderWidth: 2,
+                                    pointBackgroundColor: colors.successBorder,
+                                    pointBorderColor: '#fff',
+                                    pointHoverBackgroundColor: '#fff',
+                                    pointHoverBorderColor: colors.successBorder
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scales: {
+                                r: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        stepSize: 20,
+                                        color: colors.text,
+                                        callback: function(value) {
+                                            return value + '%';
+                                        }
+                                    },
+                                    grid: {
+                                        color: colors.grid
+                                    },
+                                    angleLines: {
+                                        color: colors.grid
+                                    },
+                                    pointLabels: {
+                                        color: colors.text
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 15,
+                                        font: {
+                                            size: 12
+                                        },
+                                        color: colors.text
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: colors.tooltipBg,
+                                    borderColor: colors.tooltipBorder,
+                                    borderWidth: 1,
+                                    titleColor: colors.text,
+                                    bodyColor: colors.text,
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.dataset.label + ': ' + context.parsed.r + '%';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Export Functions
+                function exportToPDF(btnEl) {
+                    console.log('[PDF] exportToPDF clicked');
+                    // Ensure jsPDF is loaded
+                    const jspdfNS = window.jspdf || window.jsPDF || (window && window.jspdf);
+                    const jsPDFCtor = jspdfNS && (jspdfNS.jsPDF || jspdfNS);
+                    if (!jsPDFCtor) {
+                        alert('PDF library not loaded. Please refresh the page.');
+                        console.error('[PDF] jsPDF library missing');
+                        return;
+                    }
+
+                    const exportBtn = btnEl || document.querySelector('.export-btn');
+                    const originalHTML = exportBtn ? exportBtn.innerHTML : '';
+                    if (exportBtn) {
+                        exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                        exportBtn.disabled = true;
+                    }
+                    
+                    // Force light theme for PDF export
+                    const wasDarkMode = document.body.classList.contains('dark-theme');
+                    if (wasDarkMode) {
+                        document.body.classList.remove('dark-theme');
+                        // Re-render charts in light mode and wait for completion
+                        if (window.currentAnalysisData) {
+                            renderCharts(window.currentAnalysisData);
+                        }
+                        // Wait for charts to fully render with light theme
+                        setTimeout(() => {
+                            generatePDFContent();
+                        }, 500); // Give charts time to re-render
+                    } else {
+                        generatePDFContent();
+                    }
+                    
+                    function generatePDFContent() {
+                        document.body.classList.add('exporting');
+
+                        const doc = new jsPDFCtor({ unit: 'pt', format: 'letter', compress: true });
+                        const pageWidth = doc.internal.pageSize.getWidth();
+                        const pageHeight = doc.internal.pageSize.getHeight();
+                        const marginLeft = 50;
+                        const marginRight = 50;
+                        const contentWidth = pageWidth - marginLeft - marginRight;
+                        let y = 60;
+                        let pageNum = 1;
+
+                        // Typography & Color palette
+                        const headingSize = 16;
+                        const bodySize = 11;
+                        const smallSize = 10;
+                        const primary = { r: 99, g: 102, b: 241 };
+                        const secondary = { r: 139, g: 92, b: 246 };
+                        const success = { r: 16, g: 185, b: 129 };
+                        const warning = { r: 245, g: 158, b: 11 };
+                        const danger = { r: 239, g: 68, b: 68 };
+                        const muted = { r: 100, g: 100, b: 100 };
+
+                        // Helpers
+                        function addHeader() {
+                        // Top rule
+                        doc.setDrawColor(primary.r, primary.g, primary.b);
+                        doc.setLineWidth(1.2);
+                        doc.line(marginLeft, 40, pageWidth - marginRight, 40);
+                        // Title (small in header)
+                        doc.setTextColor(primary.r, primary.g, primary.b);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(12);
+                        doc.text('AI Resume Reviewer', marginLeft, 30);
+                        // Date on right
+                        doc.setTextColor(muted.r, muted.g, muted.b);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(10);
+                        const dateHeader = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+                        const w = doc.getTextWidth(dateHeader);
+                        doc.text(dateHeader, pageWidth - marginRight - w, 30);
+                        // Reset text color
+                        doc.setTextColor(0, 0, 0);
+                    }
+
+                    function addFooter() {
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(9);
+                        doc.setTextColor(100, 100, 100);
+                        doc.text('Generated by AI Resume Reviewer', marginLeft, pageHeight - 30);
+                        doc.text(`Page ${pageNum}`, pageWidth - marginRight - 40, pageHeight - 30);
+                        doc.setTextColor(0, 0, 0);
+                        pageNum++;
+                    }
+
+                    function checkNewPage(spaceNeeded) {
+                        if (y + spaceNeeded > pageHeight - 60) {
+                            addFooter();
+                            doc.addPage();
+                            addHeader();
+                            y = 60;
+                        }
+                    }
+
+                    function addSectionHeader(title) {
+                        checkNewPage(40);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setFontSize(headingSize);
+                        doc.setTextColor(primary.r, primary.g, primary.b);
+                        doc.text(title, marginLeft, y);
+                        y += 8;
+                        doc.setTextColor(0, 0, 0);
+                        // underline divider
+                        doc.setDrawColor(230, 232, 239);
+                        doc.setLineWidth(0.8);
+                        doc.line(marginLeft, y, pageWidth - marginRight, y);
+                        y += 16;
+                    }
+
+                    function divider() {
+                        doc.setDrawColor(230, 232, 239);
+                        doc.setLineWidth(0.6);
+                        doc.line(marginLeft, y, pageWidth - marginRight, y);
+                        y += 12;
+                    }
+
+                    // Text cleaners and writers
+                    function cleanText(t) {
+                        if (!t) return '';
+                        let s = String(t);
+                        // Strip cid patterns like "cid: 127" or "cid:127"
+                        s = s.replace(/\bcid\s*:\s*\d+\b/gi, '')
+                             .replace(/\bcid\s*:\s*/gi, '')
+                             .replace(/\s{2,}/g, ' ')
+                             .trim();
+                        return s;
+                    }
+
+                    function drawBulletedList(startX, startY, items, colWidth) {
+                        let yy = startY;
+                        const bulletIndent = 10; // space for bullet
+                        const lineH = 13;
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(bodySize);
+                        for (const item of items) {
+                            const text = cleanText(item || '');
+                            if (!text) continue;
+                            checkNewPage(lineH * 2);
+                            // Bullet
+                            doc.setFont('helvetica', 'bold');
+                            doc.text('•', startX, yy + lineH);
+                            doc.setFont('helvetica', 'normal');
+                            // Wrapped text with hanging indent
+                            const wrapped = doc.splitTextToSize(text, colWidth - bulletIndent - 4);
+                            doc.text(wrapped, startX + bulletIndent, yy + lineH, { maxWidth: colWidth - bulletIndent - 4 });
+                            yy += wrapped.length * lineH + 2;
+                        }
+                        return yy;
+                    }
+
+                    // Page header
+                    addHeader();
+
+                    // ===== CENTERED TITLE =====
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(22);
+                    doc.setTextColor(50, 50, 150);
+                    const title = 'AI Resume Analysis Report';
+                    const titleWidth = doc.getTextWidth(title);
+                    doc.text(title, (pageWidth - titleWidth) / 2, y);
+                    y += 20;
+
+                    // Subheader - date
+                    doc.setFont('helvetica', 'italic');
+                    doc.setFontSize(smallSize);
+                    doc.setTextColor(100, 100, 100);
+                    const dateStr = 'Generated on ' + new Date().toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'long', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+                    const dateWidth = doc.getTextWidth(dateStr);
+                    doc.text(dateStr, (pageWidth - dateWidth) / 2, y);
+                    doc.setTextColor(0, 0, 0);
+                    y += 30;
+
+                    // ===== SUMMARY AT A GLANCE =====
+                    addSectionHeader('Summary at a Glance');
+                    const scoreVal = (document.getElementById('scoreValue')?.textContent || '0%').replace('%','');
+                    const scoreNum = parseInt(scoreVal || '0', 10) || 0;
+                    const analysis = window.currentAnalysisData || {};
+                    const matching = (analysis.matching_skills || []).length;
+                    const missing = (analysis.missing_skills || []).length;
+                    const verbs = (analysis.verb_enhancements || []).filter(v => v.suggestions && v.suggestions.length > 0).length;
+                    const matchDesc = document.getElementById('matchDescription')?.textContent || '';
+
+                    // Panel
+                    const panelH = 110;
+                    checkNewPage(panelH + 20);
+                    doc.setFillColor(246, 248, 252);
+                    doc.roundedRect(marginLeft, y, contentWidth, panelH, 8, 8, 'F');
+                    let innerY = y + 18;
+
+                    // Score displayed prominently
+                    const scoreColor = scoreNum >= 75 ? success : (scoreNum >= 50 ? warning : danger);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(scoreColor.r, scoreColor.g, scoreColor.b);
+                    doc.setFontSize(28);
+                    doc.text(`${scoreNum} %`, marginLeft + 16, innerY + 8);
+                    doc.setTextColor(0,0,0);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(bodySize);
+                    const descWrapped = doc.splitTextToSize(matchDesc || '', contentWidth - 160);
+                    doc.text(descWrapped, marginLeft + 140, innerY - 4);
+
+                    // Stats chips (matching/missing/verbs)
+                    const chipY = innerY + 40;
+                    const chipW = (contentWidth - 32) / 3;
+                    const chips = [
+                        { label: 'Matching Skills', value: matching, color: primary },
+                        { label: 'Missing Skills', value: missing, color: warning },
+                        { label: 'Verb Suggestions', value: verbs, color: secondary }
+                    ];
+                    chips.forEach((c, i) => {
+                        const x = marginLeft + 12 + i * chipW;
+                        doc.setFillColor(255,255,255);
+                        doc.roundedRect(x, chipY, chipW - 16, 44, 6, 6, 'F');
+                        doc.setDrawColor(235, 238, 245);
+                        doc.roundedRect(x, chipY, chipW - 16, 44, 6, 6, 'S');
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(c.color.r, c.color.g, c.color.b);
+                        doc.setFontSize(16);
+                        doc.text(String(c.value), x + 12, chipY + 28);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(10);
+                        doc.setTextColor(90, 94, 102);
+                        doc.text(c.label, x + 12 + 36, chipY + 28);
+                        doc.setTextColor(0,0,0);
+                    });
+
+                    y += panelH + 18;
+                    divider();
+
+                    // ===== SKILLS OVERVIEW (two columns) =====
+                    addSectionHeader('Skills Overview');
+                    try {
+                        const matchList = (analysis.matching_skills || []).slice(0, 12);
+                        const missList = (analysis.missing_skills || []).slice(0, 12);
+                        const colW = (contentWidth - 20) / 2;
+                        const leftX = marginLeft;
+                        const rightX = marginLeft + colW + 20;
+                        // Column headings
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(primary.r, primary.g, primary.b);
+                        doc.setFontSize(12);
+                        doc.text('Matching Skills', leftX, y);
+                        doc.text('Missing Skills', rightX, y);
+                        doc.setTextColor(0,0,0);
+                        y += 6;
+                        doc.setDrawColor(236, 238, 243);
+                        doc.line(leftX, y, leftX + colW - 6, y);
+                        doc.line(rightX, y, rightX + colW - 6, y);
+                        y += 6;
+
+                        const leftEndY = drawBulletedList(leftX, y, matchList, colW - 6);
+                        const rightEndY = drawBulletedList(rightX, y, missList, colW - 6);
+                        y = Math.max(leftEndY, rightEndY) + 4;
+                    } catch (e) { console.warn('[PDF] skills overview error', e); }
+
+                    // ===== SKILLS DISTRIBUTION CHART =====
+                    // Keep heading with chart on same page to avoid large gap
+                    (function(){
+                        const expectedChartHeight = 220 + 24; // image + caption/spacing
+                        // Reserve space for header (approx 40) + chart block
+                        checkNewPage(40 + expectedChartHeight);
+                    })();
+                    addSectionHeader('Skills Distribution');
+                    (function(){
+                        const skillsCanvas = document.getElementById('skillsChart');
+                        if (!skillsCanvas) return;
+                        
+                        // Get original dataURL
+                        let skillsDataURL = getCanvasDataURLSafe(skillsCanvas);
+                        
+                        // If canvas is not square, create a square version
+                        if (skillsCanvas.width !== skillsCanvas.height && skillsDataURL) {
+                            const squareSize = Math.max(skillsCanvas.width, skillsCanvas.height);
+                            const tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = squareSize;
+                            tempCanvas.height = squareSize;
+                            const tempCtx = tempCanvas.getContext('2d');
+                            
+                            // Fill with transparent background
+                            tempCtx.clearRect(0, 0, squareSize, squareSize);
+                            
+                            // Center the original canvas in the square
+                            const offsetX = (squareSize - skillsCanvas.width) / 2;
+                            const offsetY = (squareSize - skillsCanvas.height) / 2;
+                            tempCtx.drawImage(skillsCanvas, offsetX, offsetY);
+                            
+                            skillsDataURL = tempCanvas.toDataURL('image/png', 0.95);
+                        }
+                        
+                        // Fixed small square size for round chart
+                        const imgSize = 220;
+                        checkNewPage(imgSize + 10);
+                        try {
+                            if (skillsDataURL) {
+                                doc.addImage(skillsDataURL, 'PNG', marginLeft + 20, y, imgSize, imgSize);
+                                y += imgSize + 20;
+                            } else {
+                                throw new Error('empty dataURL');
+                            }
+                        } catch (e) {
+                            doc.setFont('helvetica', 'italic');
+                            doc.setFontSize(10);
+                            doc.setTextColor(150, 150, 150);
+                            doc.text('Chart unavailable', marginLeft + 20, y + 20);
+                            doc.setTextColor(0, 0, 0);
+                            y += 40;
+                        }
+                    })();
+
+                    // ===== CHARTS SECTION =====
+                    // Helper to safely extract a dataURL from a canvas, even if in a hidden tab
+                    function getCanvasDataURLSafe(canvas) {
+                        if (!canvas) return null;
+                        let container = canvas.parentElement;
+                        let restore = null;
+                        try {
+                            const rect = canvas.getBoundingClientRect();
+                            if (canvas.width === 0 || canvas.height === 0 || rect.width === 0 || rect.height === 0) {
+                                // Temporarily reveal off-screen to compute a size
+                                restore = {
+                                    display: container && container.style.display,
+                                    position: container && container.style.position,
+                                    left: container && container.style.left,
+                                    visibility: container && container.style.visibility
+                                };
+                                if (container) {
+                                    container.style.display = 'block';
+                                    container.style.position = 'absolute';
+                                    container.style.left = '-10000px';
+                                    container.style.visibility = 'visible';
+                                }
+                                // If still zero, set fallback intrinsic size
+                                if (canvas.id === 'skillsChart') {
+                                    canvas.width = 600;
+                                    canvas.height = 600; // ensure square for doughnut chart
+                                } else {
+                                    if (canvas.width === 0) canvas.width = 800;
+                                    if (canvas.height === 0) canvas.height = 400;
+                                }
+                            }
+                            const url = canvas.toDataURL('image/png', 0.95);
+                            if (!url || url === 'data:,') return null;
+                            return url;
+                        } catch (e) {
+                            console.warn('[PDF] canvas toDataURL failed for', canvas?.id, e);
+                            return null;
+                        } finally {
+                            if (restore && container) {
+                                container.style.display = restore.display || '';
+                                container.style.position = restore.position || '';
+                                container.style.left = restore.left || '';
+                                container.style.visibility = restore.visibility || '';
+                            }
+                        }
+                    }
+
+                    // Render match and key-terms charts side-by-side when possible
+                    (function(){
+                        const pair = [
+                            { id: 'matchChart', title: 'Match Breakdown' },
+                            { id: 'termsChart', title: 'Key Terms Importance' }
+                        ];
+                        const canvases = pair
+                            .map(p => ({ ...p, el: document.getElementById(p.id) }))
+                            .filter(p => p.el);
+                        if (!canvases.length) return;
+
+                        // Keep heading with at least the first chart
+                        (function(){
+                            const minChartBlock = 160; // conservative minimum height for a chart block
+                            checkNewPage(40 + minChartBlock);
+                        })();
+                        addSectionHeader('Analysis Charts');
+
+                        // Build data URLs and natural sizes
+                        const imgs = canvases.map(({ id, title, el }) => {
+                            const url = getCanvasDataURLSafe(el);
+                            const w = (el.width || 800) * 0.75;
+                            const h = (el.height || 400) * 0.75;
+                            return { id, title, url, w, h };
+                        });
+
+                        if (imgs.length === 1) {
+                            const img = imgs[0];
+                            const maxImgWidth = contentWidth - 40;
+                            const imgWidth = Math.min(maxImgWidth, img.w, 460);
+                            const aspect = img.h / img.w;
+                            const imgHeight = Math.min(220, Math.max(120, imgWidth * aspect));
+                            checkNewPage(imgHeight + 24);
+                            doc.setFont('helvetica', 'bold');
+                            doc.setFontSize(12);
+                            doc.text(img.title, marginLeft + 12, y);
+                            y += 10;
+                            try { if (img.url) doc.addImage(img.url, 'PNG', marginLeft + 12, y, imgWidth, imgHeight); } catch(e) {}
+                            y += imgHeight + 16;
+                            return;
+                        }
+
+                        // Two columns
+                        const gap = 24;
+                        const colW = (contentWidth - gap - 24) / 2; // inner padding
+                        const x1 = marginLeft + 12;
+                        const x2 = marginLeft + 12 + colW + gap;
+                        const yTop = y;
+                        let maxH = 0;
+
+                        imgs.forEach((img, idx) => {
+                            const x = idx === 0 ? x1 : x2;
+                            const imgW = Math.min(colW, img.w, 360);
+                            const aspect = img.h / Math.max(img.w, 1);
+                            const imgH = Math.min(220, Math.max(120, imgW * aspect));
+                            checkNewPage(imgH + 28);
+                            doc.setFont('helvetica', 'bold');
+                            doc.setFontSize(12);
+                            doc.text(img.title, x, y);
+                            try { if (img.url) doc.addImage(img.url, 'PNG', x, y + 10, imgW, imgH); } catch(e) {}
+                            maxH = Math.max(maxH, imgH + 28);
+                        });
+                        y = yTop + maxH + 6;
+                    })();
+
+                    // ===== SUGGESTIONS SECTION =====
+                    const suggestionsContainer = document.getElementById('suggestionsContainer');
+                    const itemEls = suggestionsContainer ? Array.from(suggestionsContainer.querySelectorAll('.suggestion-item')).slice(0,10) : [];
+                    if (itemEls.length) {
+                        addSectionHeader('Top Suggestions');
+                        const colorByType = {
+                            warning: { r: 245, g: 158, b: 11 },
+                            info: { r: 96, g: 165, b: 250 },
+                            tip: { r: 139, g: 92, b: 246 },
+                            note: { r: 107, g: 114, b: 128 }
+                        };
+                        const labelByType = { warning: 'Add Missing', info: 'Emphasize', tip: 'Consider', note: 'Suggestion' };
+                        doc.setFont('helvetica', 'normal');
+                        doc.setFontSize(bodySize - 1);
+                        const maxWidth = contentWidth - 16 - 14; // account for stripe + left padding
+                        itemEls.forEach((el, i) => {
+                            const textEl = el.querySelector('p');
+                            const text = cleanText((textEl?.textContent || '').replace(/\r?\n+/g,' ').replace(/\s{2,}/g,' ').trim());
+                            const type = el.classList.contains('type-warning') ? 'warning' : el.classList.contains('type-info') ? 'info' : el.classList.contains('type-tip') ? 'tip' : 'note';
+                            const color = colorByType[type] || colorByType.note;
+                            const label = labelByType[type] || 'Suggestion';
+                            const prefix = `${i+1}. `;
+                            const wrapped = doc.splitTextToSize(prefix + text, maxWidth);
+                            const blockH = wrapped.length * 13 + 10;
+                            checkNewPage(blockH + 10);
+                            // Card and colored stripe
+                            doc.setFillColor(252,252,255);
+                            doc.roundedRect(marginLeft, y - 2, contentWidth, blockH + 8, 4, 4, 'F');
+                            doc.setFillColor(color.r, color.g, color.b);
+                            doc.roundedRect(marginLeft, y - 2, 6, blockH + 8, 4, 4, 'F');
+                            // Label chip
+                            doc.setFont('helvetica', 'bold');
+                            doc.setTextColor(color.r, color.g, color.b);
+                            doc.setDrawColor(color.r, color.g, color.b);
+                            doc.setLineWidth(0.6);
+                            const chipTxtW = doc.getTextWidth(label) + 10;
+                            doc.roundedRect(marginLeft + 12, y - 2, chipTxtW + 8, 16, 6, 6, 'S');
+                            doc.text(label, marginLeft + 16, y + 9);
+                            // Body text
+                            doc.setFont('helvetica', 'normal');
+                            doc.setTextColor(55, 65, 81);
+                            doc.text(wrapped, marginLeft + 12, y + 28, { maxWidth });
+                            doc.setTextColor(0,0,0);
+                            y += blockH + 14;
+                        });
+                    }
+
+                    // Add footer to last page
+                    addFooter();
+
+                    doc.save('AI-Resume-Analysis-Report-' + new Date().toISOString().split('T')[0] + '.pdf');
+                    console.log('[PDF] Professional report generated');
+                    
+                    // Restore dark mode if it was enabled
+                    if (wasDarkMode) {
+                        document.body.classList.add('dark-theme');
+                        // Re-render charts in dark mode
+                        if (window.currentAnalysisData) {
+                            renderCharts(window.currentAnalysisData);
+                        }
+                    }
+                    
+                    if (exportBtn) {
+                        exportBtn.innerHTML = originalHTML;
+                        exportBtn.disabled = false;
+                    }
+                    document.body.classList.remove('exporting');
+                    } // End generatePDFContent
+                } // End exportToPDF
+
+                function exportToJSON() {
+                    if (!window.currentAnalysisData) {
+                        alert('No analysis data available to export');
+                        return;
+                    }
+            
+                    const dataStr = JSON.stringify(window.currentAnalysisData, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'resume-analysis-' + new Date().toISOString().split('T')[0] + '.json';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }
+    </script>
+</body>
+</html>
