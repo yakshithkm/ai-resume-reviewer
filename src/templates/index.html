@@ -1380,6 +1380,286 @@
                     });
                 }
 
+                // Render charts for PDF export (off-screen in light theme)
+                function renderChartsForExport(analysis, colors, container) {
+                    const matching = (analysis.matching_skills || []).length;
+                    const missing = (analysis.missing_skills || []).length;
+                    const feedback = analysis.feedback || {};
+                    const keyTerms = feedback.key_terms || { resume: [], job: [] };
+                    
+                    // Skills Chart
+                    const skillsCtx = container.querySelector('#tempSkillsChart');
+                    if (skillsCtx) {
+                        new Chart(skillsCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Matching Skills', 'Missing Skills'],
+                                datasets: [{
+                                    data: [matching, missing],
+                                    backgroundColor: [colors.success, colors.warning],
+                                    borderColor: [colors.successBorder, colors.warningBorder],
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: false,
+                                plugins: {
+                                    legend: { display: true, position: 'bottom', labels: { color: colors.text } },
+                                    datalabels: {
+                                        color: '#fff',
+                                        font: { size: 14, weight: 'bold' },
+                                        formatter: (value) => value
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Match Chart
+                    const matchCtx = container.querySelector('#tempMatchChart');
+                    if (matchCtx) {
+                        const similarity = analysis.similarity || 0;
+                        new Chart(matchCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['Your Match', 'Perfect Match'],
+                                datasets: [{
+                                    data: [similarity, 100],
+                                    backgroundColor: [colors.primary, colors.success],
+                                    borderColor: [colors.primaryBorder, colors.successBorder],
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: false,
+                                indexAxis: 'y',
+                                scales: {
+                                    x: { max: 100, ticks: { color: colors.text }, grid: { color: colors.grid } },
+                                    y: { ticks: { color: colors.text }, grid: { display: false } }
+                                },
+                                plugins: {
+                                    legend: { display: false },
+                                    datalabels: {
+                                        color: '#fff',
+                                        font: { size: 12, weight: 'bold' },
+                                        formatter: (value) => value + '%'
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Key Terms Chart (mirror on-page configuration)
+                    const termsCtx = container.querySelector('#tempKeyTermsChart');
+                    if (termsCtx) {
+                        // Normalize input to match renderTermsChart behavior
+                        let jobTerms = [];
+                        let resumeTerms = [];
+                        if (Array.isArray(keyTerms)) {
+                            jobTerms = keyTerms;
+                        } else if (keyTerms && typeof keyTerms === 'object') {
+                            jobTerms = Array.isArray(keyTerms.job) ? keyTerms.job : [];
+                            resumeTerms = Array.isArray(keyTerms.resume) ? keyTerms.resume : [];
+                        }
+
+                        if (!jobTerms || jobTerms.length === 0) {
+                            jobTerms = ['No key terms available'];
+                        }
+
+                        const labels = jobTerms.slice(0, 10).map(t => {
+                            if (typeof t === 'string') return t;
+                            if (t && typeof t === 'object' && t.term) return String(t.term);
+                            return String(t);
+                        });
+
+                        const step = Math.max(8, Math.floor(80 / Math.max(labels.length - 1, 1)));
+                        const scores = labels.map((_, index) => 100 - (index * step));
+
+                        const resumeTermsNormalized = (resumeTerms || []).map(r => {
+                            if (typeof r === 'string') return r;
+                            if (r && typeof r === 'object' && r.term) return String(r.term);
+                            return String(r);
+                        });
+                        const present = labels.map(term => (resumeTermsNormalized.includes(term) ? 100 : 0));
+
+                        new Chart(termsCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: 'Job Term Importance',
+                                        data: scores,
+                                        backgroundColor: colors.primary,
+                                        borderColor: colors.primaryBorder,
+                                        borderWidth: 2,
+                                        maxBarThickness: 38
+                                    },
+                                    {
+                                        label: 'Mentioned in Resume',
+                                        data: present,
+                                        backgroundColor: colors.success,
+                                        borderColor: colors.successBorder,
+                                        borderWidth: 2,
+                                        maxBarThickness: 38
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: false,
+                                maintainAspectRatio: false,
+                                layout: { padding: { top: 10, right: 10, left: 4, bottom: 4 } },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        max: 100,
+                                        ticks: {
+                                            color: colors.text,
+                                            callback: function(value) { return value + '%'; },
+                                            font: { size: 11 }
+                                        },
+                                        grid: { color: colors.grid }
+                                    },
+                                    x: {
+                                        ticks: {
+                                            color: colors.text,
+                                            font: { size: 11, weight: '600' },
+                                            maxRotation: 40,
+                                            minRotation: 0
+                                        },
+                                        grid: { color: colors.grid }
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            color: colors.text,
+                                            boxWidth: 18,
+                                            boxHeight: 10,
+                                            padding: 12,
+                                            font: { size: 11, weight: '600' }
+                                        }
+                                    },
+                                    tooltip: {
+                                        backgroundColor: colors.tooltipBg,
+                                        borderColor: colors.tooltipBorder,
+                                        borderWidth: 1,
+                                        titleColor: colors.text,
+                                        bodyColor: colors.text,
+                                        callbacks: {
+                                            label: function(context) {
+                                                const label = context.dataset.label || '';
+                                                const value = context.parsed.y;
+                                                return `${label}: ${value}%`;
+                                            }
+                                        }
+                                    },
+                                    datalabels: {
+                                        color: '#000000',
+                                        anchor: 'end',
+                                        align: 'top',
+                                        font: { size: 11, weight: '700' },
+                                        formatter: (val) => val + '%',
+                                        clip: true
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Radar Chart
+                    const radarCtx = container.querySelector('#tempRadarChart');
+                    if (radarCtx) {
+                        const matchingSkills = analysis.matching_skills || [];
+                        const missingSkills = analysis.missing_skills || [];
+                        const allSkills = [...matchingSkills, ...missingSkills];
+                        
+                        const categories = {
+                            'Technical': ['python', 'java', 'javascript', 'sql', 'aws', 'docker', 'kubernetes'],
+                            'Soft Skills': ['leadership', 'communication', 'teamwork', 'problem solving'],
+                            'Tools': ['git', 'jira', 'excel', 'tableau'],
+                            'Other': []
+                        };
+                        
+                        const categoryScores = {};
+                        Object.keys(categories).forEach(cat => {
+                            categoryScores[cat] = { total: 0, matching: 0 };
+                        });
+                        
+                        allSkills.forEach(skill => {
+                            let categorized = false;
+                            for (let [category, keywords] of Object.entries(categories)) {
+                                if (category !== 'Other' && keywords.some(kw => skill.toLowerCase().includes(kw))) {
+                                    categoryScores[category].total++;
+                                    if (matchingSkills.includes(skill)) {
+                                        categoryScores[category].matching++;
+                                    }
+                                    categorized = true;
+                                    break;
+                                }
+                            }
+                            if (!categorized) {
+                                categoryScores['Other'].total++;
+                                if (matchingSkills.includes(skill)) {
+                                    categoryScores['Other'].matching++;
+                                }
+                            }
+                        });
+                        
+                        const labels = [];
+                        const matchingData = [];
+                        const totalData = [];
+                        
+                        Object.entries(categoryScores).forEach(([category, scores]) => {
+                            if (scores.total > 0) {
+                                labels.push(category);
+                                matchingData.push(scores.total > 0 ? (scores.matching / scores.total * 100).toFixed(1) : 0);
+                                totalData.push(100);
+                            }
+                        });
+                        
+                        new Chart(radarCtx, {
+                            type: 'radar',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: 'Your Skills',
+                                        data: matchingData,
+                                        borderColor: colors.primaryBorder,
+                                        backgroundColor: colors.primary.replace('0.8', '0.15'),
+                                        borderWidth: 2
+                                    },
+                                    {
+                                        label: 'Required Skills',
+                                        data: totalData,
+                                        backgroundColor: colors.success.replace('0.8', '0.1'),
+                                        borderColor: colors.successBorder,
+                                        borderWidth: 2
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: false,
+                                scales: {
+                                    r: {
+                                        min: 0,
+                                        max: 100,
+                                        ticks: { color: colors.text, backdropColor: 'transparent' },
+                                        grid: { color: colors.grid },
+                                        pointLabels: { color: colors.text }
+                                    }
+                                },
+                                plugins: {
+                                    legend: { display: true, position: 'top', labels: { color: colors.text } },
+                                    datalabels: { display: false }
+                                }
+                            }
+                        });
+                    }
+                }
+
                 // Export Functions
                 function exportToPDF(btnEl) {
                     console.log('[PDF] exportToPDF clicked');
@@ -1399,23 +1679,52 @@
                         exportBtn.disabled = true;
                     }
                     
-                    // Force light theme for PDF export
+                    // Render charts off-screen in light theme for PDF export
                     const wasDarkMode = document.body.classList.contains('dark-theme');
-                    if (wasDarkMode) {
-                        document.body.classList.remove('dark-theme');
-                        // Re-render charts in light mode and wait for completion
-                        if (window.currentAnalysisData) {
-                            renderCharts(window.currentAnalysisData);
-                        }
-                        // Wait for charts to fully render with light theme
-                        setTimeout(() => {
-                            generatePDFContent();
-                        }, 500); // Give charts time to re-render
-                    } else {
-                        generatePDFContent();
-                    }
                     
-                    function generatePDFContent() {
+                    // Create hidden container for light-themed charts
+                    const hiddenContainer = document.createElement('div');
+                    hiddenContainer.style.position = 'absolute';
+                    hiddenContainer.style.left = '-9999px';
+                    hiddenContainer.style.top = '-9999px';
+                    hiddenContainer.style.width = '800px';
+                    hiddenContainer.style.visibility = 'hidden';
+                    hiddenContainer.innerHTML = `
+                        <canvas id="tempSkillsChart" width="400" height="300"></canvas>
+                        <canvas id="tempMatchChart" width="400" height="200"></canvas>
+                        <canvas id="tempKeyTermsChart" width="400" height="250"></canvas>
+                        <canvas id="tempRadarChart" width="400" height="300"></canvas>
+                    `;
+                    document.body.appendChild(hiddenContainer);
+                    
+                    // Render charts in light theme colors (off-screen)
+                    const lightColors = {
+                        primary: 'rgba(99, 102, 241, 0.8)',
+                        primaryBorder: 'rgba(99, 102, 241, 1)',
+                        secondary: 'rgba(139, 92, 246, 0.8)',
+                        secondaryBorder: 'rgba(139, 92, 246, 1)',
+                        success: 'rgba(16, 185, 129, 0.8)',
+                        successBorder: 'rgba(16, 185, 129, 1)',
+                        warning: 'rgba(245, 158, 11, 0.8)',
+                        warningBorder: 'rgba(245, 158, 11, 1)',
+                        danger: 'rgba(239, 68, 68, 0.8)',
+                        dangerBorder: 'rgba(239, 68, 68, 1)',
+                        text: '#1f2937',
+                        grid: 'rgba(0, 0, 0, 0.1)',
+                        tooltipBg: 'rgba(255, 255, 255, 0.95)',
+                        tooltipBorder: 'rgba(99, 102, 241, 0.5)'
+                    };
+                    
+                    setTimeout(() => {
+                        if (window.currentAnalysisData) {
+                            renderChartsForExport(window.currentAnalysisData, lightColors, hiddenContainer);
+                        }
+                        setTimeout(() => {
+                            generatePDFContent(hiddenContainer);
+                        }, 300);
+                    }, 100);
+                    
+                    function generatePDFContent(hiddenContainer) {
                         document.body.classList.add('exporting');
 
                         const doc = new jsPDFCtor({ unit: 'pt', format: 'letter', compress: true });
@@ -1652,32 +1961,29 @@
                     })();
                     addSectionHeader('Skills Distribution');
                     (function(){
-                        const skillsCanvas = document.getElementById('skillsChart');
-                        if (!skillsCanvas) return;
-                        
-                        // Get original dataURL
-                        let skillsDataURL = getCanvasDataURLSafe(skillsCanvas);
-                        
-                        // If canvas is not square, create a square version
-                        if (skillsCanvas.width !== skillsCanvas.height && skillsDataURL) {
-                            const squareSize = Math.max(skillsCanvas.width, skillsCanvas.height);
-                            const tempCanvas = document.createElement('canvas');
-                            tempCanvas.width = squareSize;
-                            tempCanvas.height = squareSize;
-                            const tempCtx = tempCanvas.getContext('2d');
-                            
-                            // Fill with transparent background
-                            tempCtx.clearRect(0, 0, squareSize, squareSize);
-                            
-                            // Center the original canvas in the square
-                            const offsetX = (squareSize - skillsCanvas.width) / 2;
-                            const offsetY = (squareSize - skillsCanvas.height) / 2;
-                            tempCtx.drawImage(skillsCanvas, offsetX, offsetY);
-                            
-                            skillsDataURL = tempCanvas.toDataURL('image/png', 0.95);
+                        // Use hidden canvas for export image, but compute layout from on-screen canvas
+                        const skillsCanvasDom = document.getElementById('skillsChart');
+                        const tempSkillsCanvas = hiddenContainer.querySelector('#tempSkillsChart');
+                        if (!tempSkillsCanvas) return;
+
+                        // Get original dataURL from hidden canvas
+                        let skillsDataURL = getCanvasDataURLSafe('skillsChart');
+
+                        // If canvas is not square, create a square version to keep layout consistent
+                        if (tempSkillsCanvas.width !== tempSkillsCanvas.height && skillsDataURL) {
+                            const squareSize = Math.max(tempSkillsCanvas.width, tempSkillsCanvas.height);
+                            const tmp = document.createElement('canvas');
+                            tmp.width = squareSize;
+                            tmp.height = squareSize;
+                            const tctx = tmp.getContext('2d');
+                            tctx.clearRect(0, 0, squareSize, squareSize);
+                            const offsetX = (squareSize - tempSkillsCanvas.width) / 2;
+                            const offsetY = (squareSize - tempSkillsCanvas.height) / 2;
+                            tctx.drawImage(tempSkillsCanvas, offsetX, offsetY);
+                            skillsDataURL = tmp.toDataURL('image/png', 0.95);
                         }
-                        
-                        // Fixed small square size for round chart
+
+                        // Fixed small square size for round chart (same as before)
                         const imgSize = 220;
                         checkNewPage(imgSize + 10);
                         try {
@@ -1698,49 +2004,28 @@
                     })();
 
                     // ===== CHARTS SECTION =====
-                    // Helper to safely extract a dataURL from a canvas, even if in a hidden tab
-                    function getCanvasDataURLSafe(canvas) {
-                        if (!canvas) return null;
-                        let container = canvas.parentElement;
-                        let restore = null;
+                    // Helper to safely extract a dataURL from a canvas
+                    function getCanvasDataURLSafe(canvasId) {
+                        // Use hidden container canvases for export with explicit ID mapping
+                        const exportIdMap = {
+                            skillsChart: '#tempSkillsChart',
+                            matchChart: '#tempMatchChart',
+                            termsChart: '#tempKeyTermsChart', // key terms chart uses a different hidden id
+                            radarChart: '#tempRadarChart'
+                        };
+                        const selector = exportIdMap[canvasId] || `#temp${canvasId.charAt(0).toUpperCase() + canvasId.slice(1)}`;
+                        const canvas = hiddenContainer.querySelector(selector);
+                        if (!canvas) {
+                            console.warn('[PDF] Canvas not found for', canvasId, 'using selector', selector);
+                            return null;
+                        }
                         try {
-                            const rect = canvas.getBoundingClientRect();
-                            if (canvas.width === 0 || canvas.height === 0 || rect.width === 0 || rect.height === 0) {
-                                // Temporarily reveal off-screen to compute a size
-                                restore = {
-                                    display: container && container.style.display,
-                                    position: container && container.style.position,
-                                    left: container && container.style.left,
-                                    visibility: container && container.style.visibility
-                                };
-                                if (container) {
-                                    container.style.display = 'block';
-                                    container.style.position = 'absolute';
-                                    container.style.left = '-10000px';
-                                    container.style.visibility = 'visible';
-                                }
-                                // If still zero, set fallback intrinsic size
-                                if (canvas.id === 'skillsChart') {
-                                    canvas.width = 600;
-                                    canvas.height = 600; // ensure square for doughnut chart
-                                } else {
-                                    if (canvas.width === 0) canvas.width = 800;
-                                    if (canvas.height === 0) canvas.height = 400;
-                                }
-                            }
                             const url = canvas.toDataURL('image/png', 0.95);
                             if (!url || url === 'data:,') return null;
                             return url;
                         } catch (e) {
-                            console.warn('[PDF] canvas toDataURL failed for', canvas?.id, e);
+                            console.warn('[PDF] canvas toDataURL failed for', canvasId, e);
                             return null;
-                        } finally {
-                            if (restore && container) {
-                                container.style.display = restore.display || '';
-                                container.style.position = restore.position || '';
-                                container.style.left = restore.left || '';
-                                container.style.visibility = restore.visibility || '';
-                            }
                         }
                     }
 
@@ -1750,9 +2035,12 @@
                             { id: 'matchChart', title: 'Match Breakdown' },
                             { id: 'termsChart', title: 'Key Terms Importance' }
                         ];
-                        const canvases = pair
-                            .map(p => ({ ...p, el: document.getElementById(p.id) }))
-                            .filter(p => p.el);
+                        // Build with image data from hidden canvases but dimensions from on-screen canvases
+                        const canvases = pair.map(p => {
+                            const url = getCanvasDataURLSafe(p.id);
+                            const el = document.getElementById(p.id);
+                            return { id: p.id, title: p.title, url, el };
+                        }).filter(p => p.url && p.el);
                         if (!canvases.length) return;
 
                         // Keep heading with at least the first chart
@@ -1762,9 +2050,8 @@
                         })();
                         addSectionHeader('Analysis Charts');
 
-                        // Build data URLs and natural sizes
-                        const imgs = canvases.map(({ id, title, el }) => {
-                            const url = getCanvasDataURLSafe(el);
+                        // Build data URLs and natural sizes from on-screen canvases (as before)
+                        const imgs = canvases.map(({ id, title, el, url }) => {
                             const w = (el.width || 800) * 0.75;
                             const h = (el.height || 400) * 0.75;
                             return { id, title, url, w, h };
@@ -1862,13 +2149,9 @@
                     doc.save('AI-Resume-Analysis-Report-' + new Date().toISOString().split('T')[0] + '.pdf');
                     console.log('[PDF] Professional report generated');
                     
-                    // Restore dark mode if it was enabled
-                    if (wasDarkMode) {
-                        document.body.classList.add('dark-theme');
-                        // Re-render charts in dark mode
-                        if (window.currentAnalysisData) {
-                            renderCharts(window.currentAnalysisData);
-                        }
+                    // Clean up hidden container
+                    if (hiddenContainer && hiddenContainer.parentNode) {
+                        document.body.removeChild(hiddenContainer);
                     }
                     
                     if (exportBtn) {
