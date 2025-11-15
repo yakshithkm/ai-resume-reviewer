@@ -52,18 +52,37 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Download spaCy language model:
+4. Configure environment (optional but recommended):
+Create a `.env` file at the project root based on `.env.example` and set values:
+```
+SECRET_KEY=your-secret
+FLASK_DEBUG=1
+# Use Redis for distributed rate limiting (recommended in prod):
+# RATELIMIT_STORAGE_URI=redis://localhost:6379/0
+# ENABLE_HSTS=1  # when serving over HTTPS
+```
+
+5. Download spaCy language model:
 ```bash
 python -m spacy download en_core_web_sm
 ```
 
-5. Run the application:
+6. Run the application:
 ```bash
 cd src
 python app.py
 ```
 
 The application will be available at `http://localhost:5000`
+
+### Operational Endpoints
+- Health check: `GET /healthz` → `{ "status": "ok" }`
+- Upload analysis: `POST /upload`
+- Batch upload: `POST /batch-upload`
+
+### Rate Limiting
+- Defaults: `200 per day`, `50 per hour`; `10 per minute` on `/upload`, `5 per minute` on `/batch-upload`.
+- Configure via env: `DEFAULT_RATE_LIMIT_DAILY`, `DEFAULT_RATE_LIMIT_HOURLY`, `RATELIMIT_STORAGE_URI`.
 
 ## 🛠️ Technology Stack
 

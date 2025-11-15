@@ -5,6 +5,10 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import os
 import uuid
+import logging
+from logging.handlers import RotatingFileHandler
+from datetime import datetime
+from dotenv import load_dotenv
 from resume_parser.parser import ResumeParser
 from scorer.scorer import ResumeScorer
 from verb_enhancer import ActionVerbEnhancer
@@ -14,18 +18,42 @@ from database import save_analysis, get_session_history, get_analysis_by_id
 from batch_processor import process_resume_batch, get_batch_summary
 from template_advisor import analyze_resume_format, get_template_recommendation, get_ats_tips
 
+# Load environment variables from .env if present
+load_dotenv()
+
 # Create upload folder path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 
+# Configure logging (rotating file handler)
+logs_dir = os.path.join(BASE_DIR, 'data', 'logs')
+os.makedirs(logs_dir, exist_ok=True)
+log_file = os.path.join(logs_dir, 'app.log')
+handler = RotatingFileHandler(log_file, maxBytes=2 * 1024 * 1024, backupCount=5)
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
+handler.setFormatter(formatter)
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
+app.logger.info('Application startup at %s', datetime.utcnow().isoformat())
+
 # Configure rate limiting
+limiter_storage_uri = os.environ.get('RATELIMIT_STORAGE_URI', '').strip()
+if not limiter_storage_uri:
+    # Prefer Redis if REDIS_URL provided, else fall back to memory
+    redis_url = os.environ.get('REDIS_URL', '').strip()
+    limiter_storage_uri = f"redis://{redis_url}" if redis_url else "memory://"
+
 limiter = Limiter(
     app=app,
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://"
+    default_limits=[
+        os.environ.get('DEFAULT_RATE_LIMIT_DAILY', '200 per day'),
+        os.environ.get('DEFAULT_RATE_LIMIT_HOURLY', '50 per hour')
+    ],
+    storage_uri=limiter_storage_uri
 )
 
 # Configure upload folder
@@ -37,6 +65,36 @@ app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10MB max file size
 
 # Ensure upload directory exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Basic security headers
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'geolocation=()'
+    # Only set HSTS if enabled and over HTTPS
+    if os.environ.get('ENABLE_HSTS', '0') == '1':
+        response.headers['Strict-Transport-Security'] = 'max-age=63072000; includeSubDomains; preload'
+    return response
+
+# Simple health endpoint
+@app.route('/healthz', methods=['GET'])
+def healthz():
+    return jsonify({'status': 'ok'}), 200
+
+# Error handlers
+@app.errorhandler(429)
+def rate_limit_handler(e):
+    return error_response(
+        'Too many requests',
+        details={'message': 'Rate limit exceeded. Please wait and try again.'},
+        status_code=429
+    )
+
+@app.errorhandler(404)
+def not_found_handler(e):
+    return error_response('Not found', status_code=404)
 
 def allowed_file(filename: str) -> bool:
     """
@@ -471,4 +529,5 @@ def upload_file():
         )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug = os.environ.get('FLASK_DEBUG', '1') == '1'
+    app.run(debug=debug)

@@ -22,6 +22,10 @@ from .cache import ResumeCache
 class ResumeParser:
     """A lightweight resume parser with predictable outputs for tests."""
 
+    # Class-level cached NLP objects to avoid reloading per request
+    _NLP = None
+    _MATCHER = None
+
     def __init__(self) -> None:
         self.text: str = ""
         self.sections: Dict[str, str] = {}  # Add sections attribute
@@ -29,13 +33,18 @@ class ResumeParser:
         self.bullet_extractor = BulletPointExtractor()
         self.cache = ResumeCache()
         
-        # Load spaCy model with error handling and custom pipeline
+        # Load spaCy model once (singleton pattern)
         try:
-                            self.nlp = spacy.load('en_core_web_sm')  # Keep NER and parser for entity recognition
-                            # Add custom pipeline components for better skill extraction
-                            self.matcher = spacy.matcher.PhraseMatcher(self.nlp.vocab, attr="LOWER")
-                            # Add skill patterns to matcher
-                            self._initialize_skill_patterns()
+            if ResumeParser._NLP is None:
+                ResumeParser._NLP = spacy.load('en_core_web_sm')
+            self.nlp = ResumeParser._NLP
+            if ResumeParser._MATCHER is None and self.nlp:
+                ResumeParser._MATCHER = spacy.matcher.PhraseMatcher(self.nlp.vocab, attr="LOWER")
+                # Initialize patterns one time
+                self.matcher = ResumeParser._MATCHER
+                self._initialize_skill_patterns()
+            else:
+                self.matcher = ResumeParser._MATCHER
         except Exception as e:
             print(f"Warning: Could not initialize spaCy model: {e}")
             self.nlp = None
