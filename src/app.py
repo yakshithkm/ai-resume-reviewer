@@ -8,7 +8,7 @@ import os
 import uuid
 import logging
 from logging.handlers import RotatingFileHandler
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 from resume_parser.parser import ResumeParser
 from scorer.scorer import ResumeScorer
@@ -49,7 +49,7 @@ handler.setFormatter(formatter)
 handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
 app.logger.setLevel(logging.INFO)
-app.logger.info('Application startup at %s', datetime.utcnow().isoformat())
+app.logger.info('Application startup at %s', datetime.now(timezone.utc).isoformat())
 
 # Configure rate limiting
 limiter_storage_uri = os.environ.get('RATELIMIT_STORAGE_URI', '').strip()
