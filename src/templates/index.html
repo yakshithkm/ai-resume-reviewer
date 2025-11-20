@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AI Resume Reviewer - Intelligent Resume Analysis</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -407,8 +408,12 @@
                 }, 200);
             
             try {
+                // Get CSRF token from meta tag
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                
                 const response = await fetch('/upload', {
                     method: 'POST',
+                    headers: csrfToken ? { 'X-CSRFToken': csrfToken } : {},
                     body: formData
                 });
                 

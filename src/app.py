@@ -3,11 +3,12 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_wtf.csrf import CSRFProtect, CSRFError
 import os
 import uuid
 import logging
 from logging.handlers import RotatingFileHandler
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from resume_parser.parser import ResumeParser
 from scorer.scorer import ResumeScorer
@@ -26,6 +27,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+
+# Configure session security
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', '0') == '1'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=int(os.environ.get('SESSION_LIFETIME_HOURS', '24')))
+
+# Configure CSRF protection
+app.config['WTF_CSRF_ENABLED'] = os.environ.get('WTF_CSRF_ENABLED', '1') == '1'
+app.config['WTF_CSRF_TIME_LIMIT'] = None  # No time limit on tokens
+csrf = CSRFProtect(app)
 
 # Configure logging (rotating file handler)
 logs_dir = os.path.join(BASE_DIR, 'data', 'logs')
@@ -80,10 +92,19 @@ def add_security_headers(response):
 
 # Simple health endpoint
 @app.route('/healthz', methods=['GET'])
+@csrf.exempt  # Exempt health check from CSRF
 def healthz():
     return jsonify({'status': 'ok'}), 200
 
 # Error handlers
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    return error_response(
+        'CSRF validation failed',
+        details={'message': 'Invalid or missing CSRF token. Please refresh the page and try again.'},
+        status_code=400
+    )
+
 @app.errorhandler(429)
 def rate_limit_handler(e):
     return error_response(
