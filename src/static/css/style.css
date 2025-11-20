@@ -150,13 +150,13 @@ body.dark-theme .upload-box:hover {
 }
 
 .upload-box.file-selected {
-    border-color: var(--success-color);
-    background: #ecfdf5;
+    border-color: var(--primary-color);
+    background: #eef2ff;
 }
 
 body.dark-theme .upload-box.file-selected {
-    background: rgba(52, 211, 153, 0.1);
-    border-color: var(--success-color);
+    background: rgba(129, 140, 248, 0.15);
+    border-color: var(--primary-color);
 }
 
 .upload-icon {
