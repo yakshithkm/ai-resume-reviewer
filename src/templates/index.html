@@ -772,29 +772,21 @@
                 return;
             }
 
-            // Helpers
+            // Clean suggestion text
             const cleanSuggestionText = (text) => {
                 if (!text) return '';
                 let t = String(text);
                 // Remove id markers like "cid: 127"
                 t = t.replace(/\bcid\s*:\s*\d+\b/gi, '');
-                // Remove stray "cid:" labels without numbers
                 t = t.replace(/\bcid\s*:\s*/gi, '');
-                // Remove loud section prefixes (PROGRAMMING:, FRAMEWORK:, TOOL:, KEY:, etc.)
+                // Remove section prefixes
                 t = t.replace(/\b(PROGRAMMING|FRAMEWORK|TOOL|KEY|QUALIFICATIONS|RESPONSIBILITIES|PROBLEM|DESCRIPTION)\s*:\s*/gi, '');
-                // Normalize punctuation spacing
-                t = t.replace(/\s*,\s*/g, ', ')
-                     .replace(/\s*\.\s*/g, '. ')
-                     .replace(/,\s*,/g, ', ')
-                     .replace(/,\s*\./g, '.')
-                     .replace(/\s{2,}/g, ' ')
-                     .replace(/\s*\(\s*\)\s*/g, '')
-                     .trim();
-                // Tidy up repeated words like ", ," or trailing commas
-                t = t.replace(/\s*,\s*$/g, '').replace(/^,\s*/g, '');
+                // Clean punctuation
+                t = t.replace(/\s{2,}/g, ' ').trim();
                 return t;
             };
 
+            // Classify suggestion type
             const classify = (text) => {
                 const lower = text.toLowerCase();
                 if (lower.startsWith('add missing')) return { type: 'warning', label: 'Add Missing', icon: 'fa-plus-circle' };
@@ -803,46 +795,22 @@
                 return { type: 'note', label: 'Suggestion', icon: 'fa-comment-dots' };
             };
 
-            const extractChips = (text) => {
-                if (!text) return [];
-                const colonIdx = text.indexOf(':');
-                const tail = colonIdx >= 0 ? text.slice(colonIdx + 1) : text;
-                let parts = tail.split(',').map(s => s.trim()).filter(Boolean);
-                // Remove generic prefixes on each part
-                parts = parts.map(p => p.replace(/^(PROGRAMMING|FRAMEWORK|TOOL)\s*/i, '').trim());
-                // Deduplicate and filter short tokens
-                const seen = new Set();
-                const chips = [];
-                for (const p of parts) {
-                    const key = p.toLowerCase().replace(/[^a-z0-9]+/g, '');
-                    if (p.length > 2 && !seen.has(key)) {
-                        seen.add(key);
-                        chips.push(p);
-                    }
-                    if (chips.length >= 12) break;
-                }
-                return chips;
-            };
-
-            // Build HTML
+            // Build simplified HTML
             const cleaned = suggestions.map(cleanSuggestionText);
             const html = cleaned.map((text, index) => {
                 const meta = classify(text);
-                const chips = extractChips(text);
-                const shortText = text.length > 240 ? text.slice(0, 240).trim() + '…' : text;
-                const hasMore = text.length > 240;
                 return `
-                <div class="suggestion-item type-${meta.type}">
-                    <div class="suggestion-number">${index + 1}</div>
-                    <button class="suggestion-copy copy-floating" title="Copy this suggestion" onclick="copySingleSuggestion(${index})"><i class="fas fa-copy"></i></button>
-                    <div class="suggestion-content">
-                        <div class="suggestion-header-row">
-                            <span class="suggestion-type"><i class="fas ${meta.icon}"></i> ${meta.label}</span>
-                        </div>
-                        <p id="suggestion-text-${index}" class="suggestion-text${hasMore ? ' clamped' : ''}" data-full="${text.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}">${shortText.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</p>
-                        ${chips.length >= 3 ? `<div class="suggestion-chips">${chips.slice(0,12).map(c => `<span class=\"chip\">${c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span>`).join('')}</div>` : ''}
-                        ${hasMore ? `<button class="link-btn show-more" id="suggestion-more-${index}" onclick="toggleSuggestionExpand(${index})">Show more</button>` : ''}
+                <div class="suggestion-item-clean type-${meta.type}">
+                    <div class="suggestion-bullet">
+                        <i class="fas ${meta.icon}"></i>
                     </div>
+                    <div class="suggestion-body">
+                        <span class="suggestion-label">${meta.label}</span>
+                        <p class="suggestion-text-clean">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</p>
+                    </div>
+                    <button class="suggestion-copy-btn" title="Copy this suggestion" onclick="copySingleSuggestion(${index})">
+                        <i class="fas fa-copy"></i>
+                    </button>
                 </div>`;
             }).join('');
 
@@ -2103,7 +2071,7 @@
 
                     // ===== SUGGESTIONS SECTION =====
                     const suggestionsContainer = document.getElementById('suggestionsContainer');
-                    const itemEls = suggestionsContainer ? Array.from(suggestionsContainer.querySelectorAll('.suggestion-item')).slice(0,10) : [];
+                    const itemEls = suggestionsContainer ? Array.from(suggestionsContainer.querySelectorAll('.suggestion-item-clean, .suggestion-item')).slice(0,10) : [];
                     if (itemEls.length) {
                         addSectionHeader('Top Suggestions');
                         const colorByType = {
@@ -2117,7 +2085,7 @@
                         doc.setFontSize(bodySize - 1);
                         const maxWidth = contentWidth - 16 - 14; // account for stripe + left padding
                         itemEls.forEach((el, i) => {
-                            const textEl = el.querySelector('p');
+                            const textEl = el.querySelector('.suggestion-text-clean') || el.querySelector('p');
                             const text = cleanText((textEl?.textContent || '').replace(/\r?\n+/g,' ').replace(/\s{2,}/g,' ').trim());
                             const type = el.classList.contains('type-warning') ? 'warning' : el.classList.contains('type-info') ? 'info' : el.classList.contains('type-tip') ? 'tip' : 'note';
                             const color = colorByType[type] || colorByType.note;
