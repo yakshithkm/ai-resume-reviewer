@@ -1025,33 +1025,7 @@ body.dark-theme .link-btn.show-more { color: var(--success-color); }
     display: none; /* Chrome/Safari/Opera */
 }
 
-/* Fade edges to hint scroll */
-.chart-scroll-wrapper::before,
-.chart-scroll-wrapper::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 28px;
-    height: 100%;
-    pointer-events: none;
-    z-index: 2;
-}
-.chart-scroll-wrapper::before {
-    left: 0;
-    background: linear-gradient(to right, var(--bg-light), rgba(255,255,255,0));
-}
-.chart-scroll-wrapper::after {
-    right: 0;
-    background: linear-gradient(to left, var(--bg-light), rgba(255,255,255,0));
-}
-
-/* Dark theme fade variant */
-body.dark-theme .chart-scroll-wrapper::before {
-    background: linear-gradient(to right, #0f172a, rgba(15,23,42,0));
-}
-body.dark-theme .chart-scroll-wrapper::after {
-    background: linear-gradient(to left, #0f172a, rgba(15,23,42,0));
-}
+/* Removed horizontal edge shadows for cleaner look */
 
 /* Highlight state for selected bars */
 .bar-dimmed { opacity: .25; transition: opacity .25s ease; }
