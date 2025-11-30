@@ -68,11 +68,11 @@ def validate_file_content(file: FileStorage, allowed_extensions: set) -> Tuple[b
     
     # Reject empty files
     if size == 0:
-        return False, "File is empty"
+        return False, "The document appears empty. Please upload a file with content."
     
     # Reject suspiciously small files (< 100 bytes unlikely to be valid doc)
     if size < 100:
-        return False, "File is too small to be a valid document"
+        return False, "The document appears empty or incomplete. Please upload a valid document with content."
     
     # Reject suspiciously large files (> 20MB)
     if size > 20 * 1024 * 1024:

@@ -76,11 +76,9 @@ def error_response(message: str, details: Optional[Dict] = None, status_code: in
         Tuple of (response_dict, status_code)
     """
     response = {
-        'error': {
-            'message': message,
-            'status_code': status_code
-        }
+        'message': message,
+        'status_code': status_code
     }
     if details:
-        response['error']['details'] = details
+        response['details'] = details
     return response, status_code

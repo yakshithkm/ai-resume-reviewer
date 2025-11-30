@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>AI Resume Reviewer - Intelligent Resume Analysis</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -199,7 +202,13 @@
             <div class="tab-content" id="skills-tab">
                     <div class="chart-card-full">
                         <h3><i class="fas fa-radar"></i> Skills Match Radar</h3>
-                        <canvas id="skillsRadarChart"></canvas>
+                        <div class="chart-loading-container" id="radarChartLoader" style="display: none; position: relative; min-height: 400px;">
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                <div class="loading-spinner" style="width: 60px; height: 60px; border: 4px solid var(--border-color); border-top: 4px solid var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+                                <p style="color: var(--text-muted); font-size: 0.9em;">Loading radar chart...</p>
+                            </div>
+                        </div>
+                        <canvas id="skillsRadarChart" style="opacity: 0; transition: opacity 0.6s ease-in-out;"></canvas>
                     </div>
                 
                 <div class="skills-container">
@@ -240,6 +249,11 @@
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2025 AI Resume Reviewer | Powered by NLP & Machine Learning</p>
+        <p style="font-size:0.75em;color:#888;margin-top:4px;">
+            <i class="fas fa-shield-alt" style="color:#10b981;"></i> CSRF Protection Enabled
+            <span style="margin:0 8px;">•</span>
+            <i class="fas fa-tachometer-alt" style="color:#f59e0b;"></i> Rate Limiting Active
+        </p>
     </footer>
 
     <script>
@@ -384,6 +398,9 @@
             e.preventDefault();
             
             const formData = new FormData(e.target);
+            const resumeInput = document.getElementById('resume');
+            const resumeFiles = resumeInput?.files || [];
+            const isBatch = resumeFiles.length > 1;
             const loadingDiv = document.getElementById('loading');
             const resultDiv = document.getElementById('result');
             const errorDiv = document.getElementById('error');
@@ -411,10 +428,35 @@
                 // Get CSRF token from meta tag
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
                 
-                const response = await fetch('/upload', {
+                // Log CSRF status for security verification
+                if (csrfToken) {
+                    console.log('✓ CSRF token found and will be sent:', csrfToken.substring(0, 20) + '...');
+                } else {
+                    console.warn('⚠ CSRF token not found - request may be rejected');
+                }
+                
+                // Choose endpoint based on number of resumes
+                const endpoint = isBatch ? '/batch-upload' : '/upload';
+
+                // If batch, rebuild FormData to include all resume files
+                let requestBody = formData;
+                if (isBatch) {
+                    requestBody = new FormData();
+                    // Append all resume files
+                    for (let i = 0; i < resumeFiles.length; i++) {
+                        requestBody.append('resume', resumeFiles[i], resumeFiles[i].name);
+                    }
+                    // Append single job description (if present)
+                    const jdInput = document.getElementById('job_description');
+                    if (jdInput?.files?.[0]) {
+                        requestBody.append('job_description', jdInput.files[0], jdInput.files[0].name);
+                    }
+                }
+
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     headers: csrfToken ? { 'X-CSRFToken': csrfToken } : {},
-                    body: formData
+                    body: requestBody
                 });
                 
                     clearInterval(progressInterval);
@@ -435,11 +477,27 @@
                 
                 const data = await response.json();
                 
+                console.log('Response status:', response.status);
+                console.log('Response data:', data);
+                
+                // Log security events
+                if (response.status === 429) {
+                    console.warn('⚠ Rate limit exceeded - too many requests');
+                } else if (response.status === 400 && data.message && data.message.includes('CSRF')) {
+                    console.error('✖ CSRF validation failed');
+                }
+                
                 // Clear the warning timeout
                 clearTimeout(warningTimeout);
                 
                 if (response.ok) {
-                    displayResults(data.analysis);
+                    // Render single vs batch results based on payload
+                    if (!isBatch && data && data.analysis) {
+                        displayResults(data.analysis);
+                    } else {
+                        // Batch response handler
+                        renderBatchResults(data);
+                    }
                     loadingDiv.style.display = 'none';
                     resultDiv.style.display = 'block';
                     
@@ -450,7 +508,36 @@
                     if (response.status === 429) {
                         throw new Error('Too many requests. Please wait a moment and try again.');
                     }
-                    throw new Error(data.error || 'Upload failed');
+                    // Build and show a clean error message from server response
+                    let serverMessage = '';
+                    let serverDetails = '';
+                    if (data && typeof data === 'object') {
+                        if (typeof data.message === 'string') serverMessage = data.message;
+                        else if (typeof data.error === 'string') serverMessage = data.error;
+
+                        if (data.details) {
+                            if (typeof data.details === 'string') serverDetails = data.details;
+                            else if (typeof data.details === 'object') {
+                                const values = Object.values(data.details)
+                                    .filter(v => v !== undefined && v !== null)
+                                    .map(v => typeof v === 'string' ? v : JSON.stringify(v));
+                                serverDetails = values.join(' | ');
+                            }
+                        }
+                    } else {
+                        serverMessage = String(data);
+                    }
+
+                    const finalMessage = [serverMessage || 'Upload failed', serverDetails]
+                        .filter(Boolean)
+                        .join(' — ');
+
+                    // Show error directly and stop
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'flex';
+                    document.getElementById('errorText').textContent = finalMessage;
+                    analyzeBtn.disabled = false;
+                    return; // Avoid throwing Error that wraps message
                 }
             } catch (error) {
                     clearInterval(progressInterval);
@@ -458,20 +545,24 @@
                 loadingDiv.style.display = 'none';
                 errorDiv.style.display = 'flex';
                 
-                // Display detailed error message if available
-                let errorMessage = error.message;
-                try {
-                    const response = await error.response?.json();
-                    if (response?.details) {
-                        errorMessage = response.details.message || error.message;
-                        if (response.details.suggestion) {
-                            errorMessage += `\n\nSuggestion: ${response.details.suggestion}`;
-                        }
+                // Display detailed error message - always convert to string
+                let errorMessage = 'An error occurred during upload';
+                
+                console.error('Upload error (raw):', error);
+                console.error('Upload error type:', typeof error);
+                
+                // Extract error message safely
+                if (error) {
+                    if (typeof error === 'string') {
+                        errorMessage = error;
+                    } else if (error.message && typeof error.message === 'string') {
+                        errorMessage = error.message;
+                    } else {
+                        try { errorMessage = JSON.stringify(error); } catch { errorMessage = String(error); }
                     }
-                } catch (e) {
-                    // Use default error message
                 }
                 
+                console.error('Final error message:', errorMessage);
                 document.getElementById('errorText').textContent = errorMessage;
             } finally {
                 analyzeBtn.disabled = false;
@@ -482,6 +573,51 @@
                     }, 1000);
             }
         });
+
+        // Basic batch renderer: shows per-file summary and links to export
+        function renderBatchResults(data) {
+            const container = document.getElementById('analysisResults');
+            const resultSection = document.getElementById('result');
+            if (!container) return;
+
+            // Normalize data format
+            const items = data?.results || data?.batch_results || data?.analyses || [];
+            if (!Array.isArray(items) || items.length === 0) {
+                document.getElementById('error').style.display = 'flex';
+                document.getElementById('errorText').textContent = 'No batch results returned.';
+                resultSection.style.display = 'none';
+                return;
+            }
+
+            // Build simple list view
+            let html = '<div class="batch-summary"><h3><i class="fas fa-layer-group"></i> Batch Analysis Summary</h3>';
+            html += `<p>${items.length} resumes processed.</p>`;
+            html += '<div class="batch-items">';
+            items.forEach((item, idx) => {
+                const name = item?.resume_filename || item?.resume?.filename || `Resume ${idx + 1}`;
+                const sim = Math.round((item?.similarity ?? item?.score ?? 0) * 100);
+                html += '<div class="batch-item" style="padding:12px;border:1px solid var(--border-color);border-radius:8px;margin-bottom:10px;">';
+                html += `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">`;
+                html += `<div><strong>${name}</strong><div style="font-size:0.9em;color:var(--text-muted);">Match Score: ${sim}%</div></div>`;
+                html += '</div>';
+                // quick skills summary
+                const missing = item?.missing_skills || [];
+                const matching = item?.matching_skills || [];
+                if (matching.length || missing.length) {
+                    html += '<div style="margin-top:8px;display:flex;gap:16px;flex-wrap:wrap;">';
+                    if (matching.length) html += `<div><span style="color:#22c55e">✔ Matching:</span> ${matching.slice(0,8).join(', ')}</div>`;
+                    if (missing.length) html += `<div><span style="color:#ef4444">✖ Missing:</span> ${missing.slice(0,8).join(', ')}</div>`;
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+            html += '</div></div>';
+
+            container.innerHTML = html;
+            // Activate results section
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         function displayResults(analysis) {
             // Display overall score
@@ -1212,7 +1348,14 @@
 
                 function renderSkillsRadar(matchingSkills, missingSkills) {
                     const ctx = document.getElementById('skillsRadarChart');
+                    const loader = document.getElementById('radarChartLoader');
                     const colors = getThemeColors();
+                    
+                    // Show loader, hide canvas
+                    if (loader) {
+                        loader.style.display = 'block';
+                        ctx.style.opacity = '0';
+                    }
             
                     if (radarChartInstance) {
                         radarChartInstance.destroy();
@@ -1351,6 +1494,12 @@
                             }
                         }
                     });
+                    
+                    // Smooth fade-in after chart renders
+                    setTimeout(() => {
+                        if (loader) loader.style.display = 'none';
+                        ctx.style.opacity = '1';
+                    }, 400);
                 }
 
                 // Render charts for PDF export (off-screen in light theme)

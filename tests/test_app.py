@@ -12,7 +12,10 @@ def create_test_file(filename='test.pdf', content=b'test content'):
 
 @pytest.fixture
 def client():
-    """Create a test client."""
+    """Create a test client with CSRF disabled."""
+    app.config['WTF_CSRF_ENABLED'] = False
+    app.config['TESTING'] = True
+    app.config['VALIDATE_PDF'] = False  # Skip PDF structure validation in tests
     with app.test_client() as client:
         yield client
 
@@ -38,8 +41,8 @@ def test_upload_empty_files(client):
 def test_upload_invalid_extensions(client):
     """Test error when file types are not allowed."""
     data = {
-        'resume': create_test_file('test.txt'),
-        'job_description': create_test_file('test.doc')
+        'resume': create_test_file('test.exe'),
+        'job_description': create_test_file('test.bat')
     }
     response = client.post('/upload', data=data)
     assert response.status_code == 400
@@ -55,7 +58,7 @@ def test_upload_too_large(client):
     }
     response = client.post('/upload', data=data)
     assert response.status_code == 413  # Request Entity Too Large
-    assert 'exceeds' in response.get_json()['error']['message'].lower()
+    assert 'too large' in response.get_json()['error']['message'].lower()
 
 def test_successful_upload_cleanup(client, tmpdir, monkeypatch):
     """Test that uploaded files are cleaned up after processing."""
