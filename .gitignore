@@ -154,6 +154,10 @@ data/*.sqlite3
 *.txt
 *.rtf
 
+# Exceptions for sample materials
+!samples/
+!samples/*.txt
+
 # OS specific
 .DS_Store
 Thumbs.db

@@ -1,0 +1,76 @@
+PYTHON DEVELOPER JOB DESCRIPTION
+
+Position: Senior Python Developer
+Location: Remote / Austin, TX
+Experience Level: 4-6 years
+
+COMPANY OVERVIEW
+Tech Innovations Austin is a fast-growing software company specializing in data solutions and business intelligence. We work with startups and enterprises to build scalable Python-based systems.
+
+POSITION OVERVIEW
+We're seeking an experienced Python Developer to build and maintain core backend systems. You'll work on performance-critical applications processing millions of data points daily.
+
+KEY RESPONSIBILITIES
+• Design and develop Python applications using modern frameworks (Django, FastAPI)
+• Build scalable APIs and backend services
+• Work with large datasets using NumPy, Pandas, and related tools
+• Implement automated testing and continuous integration
+• Optimize code performance and database queries
+• Write clean, maintainable, and well-documented code
+• Troubleshoot and debug complex issues
+• Collaborate with product and data science teams
+• Implement security best practices
+• Participate in code reviews and architecture discussions
+
+REQUIRED QUALIFICATIONS
+• 4+ years of professional Python development experience
+• Expert-level proficiency in Python
+• Strong understanding of Python ecosystem and standard libraries
+• Experience with web frameworks (Django, Flask, or FastAPI)
+• Solid SQL and relational database knowledge
+• Proficiency with Git and version control
+• Understanding of OOP principles and design patterns
+• Experience with testing frameworks (Pytest or unittest)
+• Strong problem-solving and communication skills
+• Experience with APIs (REST, GraphQL)
+
+PREFERRED QUALIFICATIONS
+• Experience with data science libraries (NumPy, Pandas, Scikit-learn)
+• Knowledge of asynchronous programming (asyncio, Celery)
+• Experience with cloud platforms (AWS, GCP)
+• Proficiency with Docker and containerization
+• Knowledge of DevOps practices and CI/CD
+• Experience with message queues (RabbitMQ, Redis)
+• Understanding of microservices architecture
+• Knowledge of machine learning concepts
+• Open source contributions
+• Experience with NoSQL databases
+
+TECHNICAL SKILLS REQUIRED
+Languages: Python (expert level), SQL
+Frameworks: Django, Flask, or FastAPI
+Databases: PostgreSQL, MySQL, or similar
+Testing: Pytest or unittest
+Tools: Git, Docker (basic knowledge)
+
+COMPENSATION & BENEFITS
+• Competitive salary: $110,000 - $150,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Flexible work schedule
+• Unlimited PTO
+• Professional development budget
+• Remote work flexibility
+
+WHAT WE'RE LOOKING FOR
+A passionate Python developer who writes clean code and cares about system performance. You should be curious, collaborative, and enjoy solving complex problems.
+
+APPLICATION REQUIREMENTS
+• GitHub profile or code portfolio
+• Examples of Python projects you've contributed to
+• Understanding of software design principles
+• Ability to explain your development approach clearly
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse engineering team.

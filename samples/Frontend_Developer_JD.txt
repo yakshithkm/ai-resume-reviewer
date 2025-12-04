@@ -1,0 +1,68 @@
+FRONTEND DEVELOPER JOB DESCRIPTION
+
+Position: Senior Frontend Developer
+Location: Remote / Seattle, WA
+Experience Level: 4-6 years
+
+COMPANY OVERVIEW
+TechVision Inc. is a leading SaaS platform serving 10,000+ enterprise customers. We're seeking talented engineers to help scale our product and improve user experience for millions of users worldwide.
+
+POSITION OVERVIEW
+We're looking for an experienced Frontend Developer to join our Core Platform team. You'll be responsible for building and maintaining user interfaces that our customers rely on daily. This is an opportunity to work on meaningful projects with significant impact on user experience and business metrics.
+
+KEY RESPONSIBILITIES
+• Design and develop responsive web interfaces using modern JavaScript frameworks
+• Collaborate with UI/UX designers to implement pixel-perfect designs
+• Optimize application performance for better user experience
+• Write clean, maintainable, and well-tested code following best practices
+• Participate in code reviews and mentor junior team members
+• Debug and troubleshoot frontend issues across browsers and devices
+• Implement responsive design principles for mobile and desktop
+• Contribute to architectural decisions and technical improvements
+• Integrate with backend APIs (REST, GraphQL)
+• Monitor and improve application performance metrics
+
+REQUIRED QUALIFICATIONS
+• 4-6 years of professional frontend development experience
+• Expert-level proficiency in React or similar modern framework (Vue, Angular)
+• Strong understanding of JavaScript ES6+ and TypeScript
+• Experience with HTML5, CSS3, and responsive design
+• Proficiency with version control (Git)
+• Solid understanding of web performance optimization
+• Experience with testing frameworks (Jest, Cypress, React Testing Library)
+• Excellent problem-solving and communication skills
+• Understanding of RESTful APIs and HTTP protocols
+• Experience with build tools (Webpack, Vite, etc.)
+
+PREFERRED QUALIFICATIONS
+• Experience with Next.js or similar frameworks
+• Knowledge of GraphQL
+• Experience with state management (Redux, Zustand, Recoil)
+• Familiarity with CI/CD pipelines
+• Experience with Docker containers
+• Knowledge of web accessibility (WCAG, ARIA)
+• Experience with design systems and component libraries
+• Understanding of security best practices in frontend
+• Experience with performance monitoring tools
+• Open source contributions
+
+TECHNICAL SKILLS REQUIRED
+Languages: JavaScript, TypeScript, HTML5, CSS3
+Frameworks: React (required), Vue.js or Angular (nice to have)
+Tools: Git, Webpack/Vite, npm/yarn
+Testing: Jest, Cypress, or similar testing frameworks
+State Management: Redux, Context API, or alternatives
+APIs: REST, GraphQL experience preferred
+
+WORKING CONDITIONS
+• Remote or on-site (flexible arrangement)
+• Competitive salary: $120,000 - $160,000 annually
+• Health insurance, 401(k), PTO benefits
+• Free development tools and learning budget
+• Flexible working hours
+
+WHAT WE'RE LOOKING FOR
+An engineer who is passionate about user experience, writes clean code, and enjoys collaborating with cross-functional teams. You should be self-motivated, detail-oriented, and committed to continuous learning.
+
+EQUAL OPPORTUNITY
+We're an equal opportunity employer committed to building a diverse and inclusive team.

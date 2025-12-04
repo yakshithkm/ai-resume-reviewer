@@ -1,0 +1,68 @@
+JAVA DEVELOPER RESUME
+
+David Kim
+Boston, MA | (617) 555-0654 | david.kim@email.com
+LinkedIn: linkedin.com/in/davidkim | GitHub: github.com/dkim
+
+PROFESSIONAL SUMMARY
+Experienced Java Developer with 6+ years building enterprise applications and high-performance systems. Expert in Spring ecosystem, multithreading, and distributed systems. Proven track record of delivering scalable solutions for mission-critical applications.
+
+TECHNICAL SKILLS
+Languages: Java, SQL, Python, Bash, JavaScript
+Frameworks: Spring Boot, Spring Cloud, Spring MVC, Hibernate, Apache Struts
+JVM Tools: Maven, Gradle, IntelliJ IDEA, Eclipse
+Databases: PostgreSQL, MySQL, Oracle, MongoDB, Cassandra
+Cloud Platforms: AWS (EC2, RDS, SQS), Google Cloud, Azure
+Messaging: RabbitMQ, Kafka, Apache ActiveMQ, JMS
+Testing: JUnit, Mockito, TestNG, Selenium
+DevOps: Docker, Kubernetes, Jenkins, CircleCI, Maven
+Design Patterns: MVC, DAO, Factory, Singleton, Observer, Strategy
+Microservices: Spring Cloud Netflix, Service discovery, API Gateway
+Performance: JVM tuning, Profiling, Load testing, Thread optimization
+
+PROFESSIONAL EXPERIENCE
+
+Senior Java Developer | Enterprise Solutions Corp, Boston, MA | Mar 2021 - Present
+• Architected microservices-based order management system using Spring Cloud
+• Designed and implemented distributed transaction system with eventual consistency
+• Led performance optimization effort, reducing response time from 5s to 500ms (10x improvement)
+• Mentored 4 junior developers on Spring ecosystem and design patterns
+• Implemented comprehensive unit and integration tests with 85% code coverage
+• Built CI/CD pipelines using Jenkins and Docker, reducing deployment time by 75%
+• Managed Kubernetes cluster with 20+ microservices achieving 99.95% uptime
+
+Java Developer | FinServe Technologies, Boston, MA | Jul 2018 - Feb 2021
+• Developed core banking APIs using Spring Boot handling 10M+ transactions daily
+• Implemented distributed cache using Redis and Memcached for performance
+• Built message-driven microservices using RabbitMQ and Kafka
+• Optimized SQL queries and database schema, improving transaction throughput by 60%
+• Created reusable libraries and frameworks used across 15+ services
+• Implemented monitoring and alerting using ELK Stack and New Relic
+
+Java Developer | StartUp Innovations, Boston, MA | Jun 2017 - Jun 2018
+• Developed web applications using Spring MVC and JSP
+• Implemented REST APIs for mobile and web applications
+• Wrote unit tests and participated in code reviews
+• Collaborated with UI team on API requirements
+
+EDUCATION
+Bachelor of Science in Computer Science | Boston University | 2017
+Relevant Coursework: Advanced Java, Design Patterns, Distributed Systems, Network Programming
+
+CERTIFICATIONS & COURSES
+• Oracle Certified Associate Java Programmer (OCAJP) (2020)
+• AWS Certified Solutions Architect Associate (2021)
+• Kubernetes Application Developer (2022)
+• Spring Professional Developer - Spring Academy (2022)
+
+PROJECTS
+Distributed Order Processing System | Java, Spring Boot, Kafka, PostgreSQL | 2021-2023
+Built event-driven microservices handling 1000+ orders/minute with distributed saga pattern. Implemented exactly-once processing semantics and cross-service transactions.
+
+Real-time Analytics Engine | Java, Kafka Streams, Cassandra | 2020-2021
+Developed streaming analytics platform processing 100K events/second. Implemented complex aggregations and anomaly detection with sub-second latency.
+
+ADDITIONAL INFORMATION
+• Java community contributor
+• Tech speaker at Boston Java User Group
+• Developer blog with 2K+ followers

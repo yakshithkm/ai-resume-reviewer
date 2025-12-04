@@ -1,0 +1,79 @@
+MACHINE LEARNING/AI ENGINEER JOB DESCRIPTION
+
+Position: Senior ML/AI Engineer
+Location: Remote / Boston, MA
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+IntelliAI Technologies is a leader in artificial intelligence solutions. We develop cutting-edge machine learning systems for enterprise customers spanning healthcare, finance, retail, and technology sectors.
+
+POSITION OVERVIEW
+We're seeking a talented ML/AI Engineer to design and deploy production machine learning systems. You'll work on challenging problems impacting millions of users and have the opportunity to shape AI strategy.
+
+KEY RESPONSIBILITIES
+• Design and develop machine learning models and systems
+• Build end-to-end ML pipelines from data to production
+• Fine-tune and deploy large language models
+• Implement computer vision and NLP solutions
+• Optimize model performance and inference latency
+• Build feature engineering and data processing pipelines
+• Create evaluation frameworks and metrics
+• Implement MLOps and model monitoring systems
+• Collaborate with data engineers and product teams
+• Conduct experimentation and A/B testing
+
+REQUIRED QUALIFICATIONS
+• 5+ years of machine learning or data science experience
+• Expert-level Python proficiency
+• Strong foundation in statistics and algorithms
+• Experience with deep learning frameworks (TensorFlow or PyTorch)
+• Proven ability to deploy ML models to production
+• Experience with SQL and data manipulation
+• Understanding of ML best practices and evaluation metrics
+• Knowledge of data preprocessing and feature engineering
+• Strong problem-solving and communication skills
+• Portfolio of ML projects or contributions
+
+PREFERRED QUALIFICATIONS
+• Experience with large language models and fine-tuning
+• Expertise in computer vision or natural language processing
+• Knowledge of MLOps and model deployment (Docker, Kubernetes)
+• Experience with distributed training and big data tools
+• AWS SageMaker or Google Cloud ML experience
+• Publication of research or contributions to ML community
+• Experience with reinforcement learning
+• Knowledge of model optimization and compression techniques
+• Familiarity with recommendation systems
+• Advanced degree in Computer Science, Mathematics, or related field
+
+TECHNICAL SKILLS REQUIRED
+Languages: Python (expert)
+Frameworks: TensorFlow, PyTorch, or equivalent
+Data: pandas, SQL, data preprocessing
+Tools: Jupyter, Git, cloud platforms
+ML: Supervised learning, deep learning, NLP, or computer vision
+
+COMPENSATION & BENEFITS
+• Competitive salary: $155,000 - $210,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget ($3K/year)
+• Remote work flexibility
+• GPU/TPU computing budget
+• Research conference attendance support
+• ML tool and library access
+
+WHAT WE'RE LOOKING FOR
+A passionate engineer who loves solving complex problems with machine learning. You should have strong fundamentals in mathematics and algorithms combined with practical software engineering skills. We value continuous learning and staying current with advances in AI.
+
+APPLICATION REQUIREMENTS
+• GitHub profile with ML projects or notebooks
+• Kaggle profile or competition results (optional)
+• Examples of production ML systems you've built
+• Research publications or technical blog posts (optional)
+• Portfolio demonstrating deep learning expertise
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive AI team.

@@ -1,0 +1,75 @@
+BACKEND DEVELOPER JOB DESCRIPTION
+
+Position: Senior Backend Engineer
+Location: Remote / San Francisco, CA
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+CloudScale Systems is a leading infrastructure provider serving enterprise customers worldwide. We process petabytes of data annually and maintain systems with 99.99% uptime SLA.
+
+POSITION OVERVIEW
+We're seeking an experienced Backend Engineer to design and maintain our core platform services. You'll work on scalable systems that serve millions of users and handle massive data volumes.
+
+KEY RESPONSIBILITIES
+• Design and develop microservices and APIs using modern backend technologies
+• Optimize database schema, queries, and implement caching strategies
+• Build data pipelines and real-time processing systems
+• Implement monitoring, logging, and alerting for system health
+• Write well-tested, maintainable, and scalable code
+• Conduct code reviews and contribute to technical architecture discussions
+• Troubleshoot and resolve production issues
+• Implement security best practices and data protection measures
+• Collaborate with frontend and infrastructure teams
+• Document API specifications and system architecture
+
+REQUIRED QUALIFICATIONS
+• 5+ years of backend development experience
+• Strong proficiency in at least one server-side language (Python, Java, Go, Node.js)
+• Solid understanding of relational databases (PostgreSQL, MySQL)
+• Experience with REST API design and implementation
+• Proficiency with Git and version control
+• Experience with Docker and container orchestration
+• Understanding of microservices architecture
+• Knowledge of SQL and database optimization
+• Experience with cloud platforms (AWS, GCP, or Azure)
+• Strong problem-solving and communication skills
+
+PREFERRED QUALIFICATIONS
+• Experience with Kubernetes
+• Knowledge of distributed systems and consistency models
+• Experience with message queues (Kafka, RabbitMQ)
+• Proficiency with NoSQL databases (MongoDB, DynamoDB)
+• Experience with GraphQL
+• Knowledge of DevOps practices and CI/CD
+• Experience with system design and scalability
+• Understanding of microservices patterns
+• Experience with gRPC
+• Open source contributions
+
+TECHNICAL SKILLS REQUIRED
+Languages: Python, Java, Go, or Node.js (one expert level)
+Databases: PostgreSQL/MySQL (required), MongoDB/Redis (preferred)
+Cloud: AWS (EC2, RDS, S3, Lambda) or GCP equivalents
+DevOps: Docker, Kubernetes, CI/CD pipelines
+APIs: REST design and implementation
+
+COMPENSATION & BENEFITS
+• Competitive salary: $140,000 - $180,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget
+• Remote work flexibility
+
+WHAT WE'RE LOOKING FOR
+A thoughtful engineer who cares about code quality, system reliability, and performance. You should enjoy solving complex problems and working with talented teams across the organization.
+
+APPLICATION REQUIREMENTS
+• Portfolio or GitHub profile demonstrating backend work
+• Understanding of system design principles
+• Track record of shipping production systems
+• Ability to communicate technical concepts clearly
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive engineering team.

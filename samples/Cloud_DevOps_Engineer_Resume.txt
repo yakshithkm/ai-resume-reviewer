@@ -1,0 +1,72 @@
+CLOUD/DEVOPS ENGINEER RESUME
+
+Alex Martinez
+Denver, CO | (720) 555-0987 | alex.martinez@email.com
+LinkedIn: linkedin.com/in/alexmartinez | GitHub: github.com/amartinez
+
+PROFESSIONAL SUMMARY
+Results-oriented Cloud/DevOps Engineer with 6+ years designing and managing scalable cloud infrastructure. Expert in AWS, Kubernetes, and infrastructure-as-code. Proven ability to improve system reliability, security, and deployment efficiency at scale.
+
+TECHNICAL SKILLS
+Cloud Platforms: AWS (EC2, S3, RDS, Lambda, ECS, Redshift), Google Cloud, Azure
+Container Orchestration: Kubernetes, Docker, Docker Compose, ECS, EKS
+Infrastructure-as-Code: Terraform, CloudFormation, Ansible, Helm, Vagrant
+CI/CD Tools: Jenkins, GitHub Actions, GitLab CI, CircleCI, Travis CI
+Monitoring & Logging: Prometheus, Grafana, ELK Stack, Datadog, New Relic, CloudWatch
+Scripting: Bash, Python, PowerShell
+Databases: PostgreSQL, MySQL, MongoDB, DynamoDB, RDS
+Networking: VPC, Load Balancing, CDN, DNS, SSL/TLS
+Security: IAM, Secrets management, Container scanning, Vulnerability detection
+Configuration Management: Ansible, Chef, Puppet
+Message Queues: RabbitMQ, Kafka, SQS
+Version Control: Git, GitHub, GitLab, Bitbucket
+
+PROFESSIONAL EXPERIENCE
+
+Senior DevOps Engineer | Cloud Platforms Inc., Denver, CO | Feb 2021 - Present
+• Designed and deployed Kubernetes infrastructure supporting 100+ microservices at scale
+• Implemented infrastructure-as-code using Terraform managing 200+ cloud resources
+• Automated deployment pipelines using GitHub Actions, reducing deployment time from 2 hours to 15 minutes
+• Established comprehensive monitoring and alerting using Prometheus and Grafana
+• Implemented container security scanning and vulnerability management
+• Reduced infrastructure costs by 40% through resource optimization and reserved instances
+• Led migration of legacy applications to Kubernetes, improving deployment frequency from quarterly to daily
+• Mentored 3 engineers on cloud architecture and DevOps best practices
+
+DevOps Engineer | TechServe Solutions, Denver, CO | Jun 2018 - Jan 2021
+• Built and maintained AWS infrastructure supporting 50+ applications
+• Implemented CI/CD pipelines using Jenkins and GitHub Actions
+• Automated infrastructure provisioning using Terraform and Ansible
+• Implemented ELK Stack for centralized logging and analysis
+• Created disaster recovery and backup strategies ensuring 99.9% uptime
+• Performed capacity planning and cost optimization
+• Managed database replication and failover scenarios
+
+Cloud Support Engineer | CloudHost Providers, Denver, CO | Jun 2017 - May 2018
+• Provided technical support for AWS and cloud infrastructure
+• Troubleshot and resolved infrastructure issues for multiple customers
+• Created runbooks and documentation for common operations
+• Assisted in capacity planning and resource optimization
+
+EDUCATION
+Bachelor of Science in Information Technology | University of Colorado Boulder | 2017
+Relevant Coursework: Linux Administration, Network Administration, Systems Design
+
+CERTIFICATIONS & COURSES
+• AWS Certified Solutions Architect Professional (2022)
+• AWS Certified DevOps Engineer Professional (2022)
+• Certified Kubernetes Administrator (CKA) (2021)
+• Terraform Associate Certification (2021)
+• Docker Certified Associate (2020)
+
+PROJECTS
+Kubernetes Multi-Region Deployment | Kubernetes, Terraform, AWS | 2021-2023
+Designed and implemented multi-region Kubernetes cluster serving 1000+ requests/second with auto-scaling. Implemented disaster recovery with < 5-minute RTO.
+
+Automated Infrastructure Provisioning | Terraform, Ansible, Python | 2020-2021
+Built Infrastructure-as-Code platform enabling developers to provision infrastructure in minutes. Reduced infrastructure provisioning time from 2 weeks to 5 minutes.
+
+ADDITIONAL INFORMATION
+• Open source contributor to Kubernetes and Terraform
+• Tech speaker at Denver Cloud Meetup
+• DevOps blog with 3K+ monthly readers

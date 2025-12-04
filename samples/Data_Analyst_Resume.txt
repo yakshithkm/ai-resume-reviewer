@@ -1,0 +1,67 @@
+DATA ANALYST RESUME
+
+Michael Rodriguez
+New York, NY | (212) 555-0789 | michael.rodriguez@email.com
+LinkedIn: linkedin.com/in/michaelrodriguez | GitHub: github.com/mrodriguez
+
+PROFESSIONAL SUMMARY
+Results-driven Data Analyst with 4+ years transforming complex datasets into actionable business insights. Expert in data visualization, statistical analysis, and business intelligence. Proven ability to identify trends, optimize processes, and drive data-informed decision making.
+
+TECHNICAL SKILLS
+Programming: Python, R, SQL, VBA, JavaScript
+Data Visualization: Tableau, Power BI, Matplotlib, Seaborn, Plotly, D3.js
+Databases: PostgreSQL, MySQL, MongoDB, SQLite, Redshift
+Cloud Platforms: AWS (S3, Redshift, Athena), Google Cloud, Azure
+BI Tools: Tableau, Power BI, Google Analytics, Looker, QlikView
+Excel: Advanced (VLOOKUP, Pivot Tables, Data Analysis Toolpak, VBA)
+Statistical Analysis: Hypothesis testing, Regression analysis, A/B testing, Time series
+Data Processing: Pandas, NumPy, Apache Spark
+Tools & Platforms: Git, Jupyter Notebook, Docker, Google Sheets, Jira
+ETL: Talend, Apache Airflow, Google Data Studio
+
+PROFESSIONAL EXPERIENCE
+
+Senior Data Analyst | Analytics Pro Corp, New York, NY | Mar 2021 - Present
+• Designed and built Tableau dashboards for executive leadership, impacting $50M+ in business decisions
+• Developed automated ETL pipelines using Python and SQL, processing 100GB+ daily
+• Conducted statistical analysis and A/B testing resulting in 25% increase in conversion rate
+• Created self-service BI platform using Power BI, enabling 200+ users to access insights
+• Mentored 2 junior analysts on best practices in data analysis and visualization
+• Optimized database queries and indexing, reducing report generation time by 60%
+• Presented data-driven recommendations to C-suite executives quarterly
+
+Data Analyst | E-Commerce Solutions Inc., New York, NY | Jul 2018 - Feb 2021
+• Analyzed customer behavior data and created segmentation models for targeted marketing
+• Built SQL queries and reports for stakeholders across Finance, Marketing, and Operations
+• Visualized KPIs and metrics using Tableau, tracking company performance
+• Conducted exploratory data analysis on 50M+ customer records
+• Identified data quality issues and implemented data validation procedures
+• Automated manual reporting processes using Python, saving 20 hours/week
+
+Junior Data Analyst | StartUp Analytics, New York, NY | Jun 2017 - Jun 2018
+• Extracted and analyzed data using SQL from company database
+• Created Excel-based reports and dashboards for management
+• Assisted in data validation and cleaning for analytics projects
+• Participated in requirements gathering from business stakeholders
+
+EDUCATION
+Bachelor of Science in Statistics | New York University | 2017
+Relevant Coursework: Data Mining, Probability Theory, Regression Analysis, Design of Experiments
+
+CERTIFICATIONS & COURSES
+• Google Data Analytics Professional Certificate (2022)
+• Tableau Desktop Specialist (2021)
+• Microsoft Certified: Data Analyst Associate (2022)
+• Statistics for Business Analytics - Penn State (In Progress)
+
+PROJECTS
+Customer Churn Prediction Model | Python, Scikit-learn, SQL | 2022-2023
+Built predictive model with 85% accuracy to identify customers at risk of churn. Enabled proactive retention campaigns, saving $2M annually.
+
+Sales Performance Dashboard | Tableau, PostgreSQL, Python | 2021-2022
+Designed interactive dashboard tracking 20+ KPIs across 5 regions. Real-time updates enabling sales management to monitor performance and adjust strategies.
+
+ADDITIONAL INFORMATION
+• Data visualization and analysis blog with 3K+ followers
+• Frequent speaker at NYC Data Analytics Meetup
+• Contributing member of Data Science & Analytics community

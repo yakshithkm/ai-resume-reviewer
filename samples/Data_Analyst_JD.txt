@@ -1,0 +1,74 @@
+DATA ANALYST JOB DESCRIPTION
+
+Position: Senior Data Analyst
+Location: Remote / New York, NY
+Experience Level: 4-6 years
+
+COMPANY OVERVIEW
+Analytics Pro Corp is a leading business intelligence consulting firm serving 500+ enterprise clients. We help organizations leverage data to drive business strategy and improve decision making.
+
+POSITION OVERVIEW
+We're looking for a talented Data Analyst to join our Analytics team. You'll partner with clients and internal stakeholders to identify insights, build dashboards, and drive data-informed decisions.
+
+KEY RESPONSIBILITIES
+• Extract, transform, and analyze large datasets using SQL and Python
+• Design and build interactive dashboards and visualizations in Tableau/Power BI
+• Conduct statistical analysis and hypothesis testing to validate business assumptions
+• Develop and maintain ETL pipelines for data processing
+• Create data models and documentation for stakeholders
+• Identify data quality issues and implement solutions
+• Present insights and recommendations to business leaders
+• Conduct A/B testing and experimental design
+• Monitor KPIs and create performance dashboards
+• Collaborate with product, engineering, and business teams
+
+REQUIRED QUALIFICATIONS
+• 4-6 years of data analysis experience
+• Expert-level SQL proficiency for complex queries
+• Strong proficiency in Python or R for data manipulation and analysis
+• Experience with data visualization tools (Tableau, Power BI, or similar)
+• Understanding of statistical concepts and methods
+• Experience with relational databases (PostgreSQL, MySQL)
+• Knowledge of Excel (advanced functions and pivot tables)
+• Strong communication and presentation skills
+• Ability to translate business questions into analytical solutions
+• Problem-solving mindset with attention to detail
+
+PREFERRED QUALIFICATIONS
+• Experience with cloud data warehouses (Redshift, BigQuery, Snowflake)
+• Knowledge of Apache Spark or other big data tools
+• Experience with ETL tools (Talend, Airflow, etc.)
+• Familiarity with machine learning concepts
+• Experience with version control (Git)
+• Knowledge of A/B testing and experimental design
+• Experience with NoSQL databases
+• Proficiency in R
+• Dashboard and report automation skills
+• Business acumen and domain knowledge
+
+TECHNICAL SKILLS REQUIRED
+Databases: PostgreSQL, MySQL, or other relational databases
+Languages: Python or R (expert level), SQL (expert level)
+BI Tools: Tableau, Power BI, or Google Data Studio
+Excel: Advanced proficiency
+
+COMPENSATION & BENEFITS
+• Competitive salary: $90,000 - $130,000 annually
+• Performance bonus
+• Health, dental, vision insurance
+• 401(k) matching
+• Flexible work schedule
+• Professional development budget
+• Remote work flexibility
+
+WHAT WE'RE LOOKING FOR
+An analytical thinker who's passionate about data and can communicate findings to non-technical audiences. You should be self-motivated, curious, and comfortable with ambiguity. We value continuous learning and experimentation.
+
+APPLICATION REQUIREMENTS
+• Portfolio with data analysis projects and visualizations
+• Examples of dashboards or reports you've created
+• Understanding of business metrics and KPIs
+• Clear explanation of your data analysis approach
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive team.

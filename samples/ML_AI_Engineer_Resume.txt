@@ -1,0 +1,113 @@
+MACHINE LEARNING/AI ENGINEER RESUME
+
+SAMANTHA CHEN
+Boston, MA 02108 | (617) 555-0176 | samantha.chen@email.com
+LinkedIn: linkedin.com/in/samanthachen | GitHub: github.com/samanthachen
+
+PROFESSIONAL SUMMARY
+Experienced Machine Learning/AI Engineer with 6 years of expertise in developing and deploying production machine learning systems. Specialized in deep learning, natural language processing, and computer vision. Track record of building ML solutions that improved business metrics by 30-50%. Proficient in training, fine-tuning, and deploying large language models. Strong foundation in statistics, algorithms, and software engineering best practices. Passionate about applied AI and solving real-world problems with machine learning.
+
+TECHNICAL SKILLS
+Machine Learning: TensorFlow, PyTorch, scikit-learn, XGBoost, LightGBM
+Deep Learning: CNNs, RNNs, Transformers, GANs, Attention Mechanisms
+NLP: BERT, GPT, spaCy, NLTK, Hugging Face, LangChain
+Computer Vision: OpenCV, YOLOv8, Detectron2, FastRCNN
+LLMs: GPT-4, Claude, Llama, Mistral, Fine-tuning, Prompt Engineering
+Frameworks: TensorFlow, PyTorch, Keras, JAX
+Reinforcement Learning: Q-Learning, Policy Gradient, Deep Q-Networks
+Programming: Python (expert), SQL, R, Scala, Java
+Data Processing: pandas, NumPy, PySpark, Dask
+Visualization: Matplotlib, Seaborn, Plotly, Tableau
+Deployment: Docker, Kubernetes, MLflow, TensorFlow Serving, ONNX
+Cloud Platforms: AWS SageMaker, Google Cloud AI, Azure ML
+MLOps: DVC, MLflow, Kubeflow, Airflow, feature stores
+Databases: PostgreSQL, MongoDB, Elasticsearch, Redis
+APIs: REST, FastAPI, Flask, gRPC
+Version Control: Git, GitHub, GitLab
+
+PROFESSIONAL EXPERIENCE
+
+Senior ML/AI Engineer | IntelligentAI Solutions, Boston, MA | Apr 2022 - Present
+• Led development of large language model fine-tuning platform serving 50+ customers
+• Built recommendation system improving user engagement by 47% for 5M+ users
+• Developed computer vision system for product detection with 94.2% accuracy
+• Implemented fine-tuning pipeline for LLMs reducing training time by 65%
+• Designed and deployed NLP classification system processing 10M+ daily documents
+• Created MLOps infrastructure supporting 20+ concurrent ML model experiments
+• Built A/B testing framework comparing ML models with 95% statistical confidence
+• Led data science team on 8 complex ML projects from ideation to production
+• Implemented cost optimization reducing inference costs by 54% while maintaining accuracy
+• Published 2 papers on model optimization techniques in peer-reviewed conferences
+• Mentored 4 junior ML engineers on production ML best practices
+
+ML Engineer | DataVision AI, Cambridge, MA | Sep 2020 - Mar 2022
+• Developed and deployed recommendation engine serving 2M+ active users
+• Built object detection system for retail applications with 91.5% accuracy
+• Implemented time series forecasting model predicting demand with 87% accuracy
+• Created feature engineering pipeline processing 500K+ daily events
+• Optimized ML models reducing inference latency by 73%
+• Designed experiment framework tracking 100+ concurrent experiments
+• Built data quality monitoring system preventing model degradation
+• Collaborated with product team to define ML success metrics and KPIs
+• Implemented automated retraining pipeline ensuring model freshness
+• Reduced model development time by 40% through reusable components
+
+Data Scientist | TechStart Analytics, Boston, MA | Jun 2019 - Aug 2020
+• Developed predictive models for customer churn reducing churn by 23%
+• Built sentiment analysis system for customer feedback with 92% accuracy
+• Created clustering models identifying customer segments for targeted marketing
+• Analyzed A/B tests and provided statistical insights to product team
+• Preprocessed and cleaned large datasets (1B+ records)
+• Collaborated with engineers on model productionization
+• Created data visualizations communicating insights to stakeholders
+• Implemented evaluation frameworks for model monitoring
+
+Junior Data Scientist | Analytics Lab, Boston, MA | Jan 2018 - May 2019
+• Developed machine learning models for classification and regression tasks
+• Analyzed datasets and extracted actionable insights
+• Created visualizations and reports for stakeholders
+• Assisted with feature engineering and model optimization
+• Participated in code reviews and data science best practices discussions
+
+EDUCATION
+Master of Science in Computer Science (AI/ML Focus) | MIT, Cambridge, MA | 2017
+Bachelor of Science in Mathematics and Computer Science | Boston University, Boston, MA | 2015
+
+CERTIFICATIONS & TRAINING
+• TensorFlow Developer Certification (2023)
+• AWS Certified Machine Learning – Specialty (2022)
+• Andrew Ng's Machine Learning Specialization - Coursera (2023)
+• DeepLearning.AI Advanced LLM Applications (2023)
+• Fast.ai Practical Deep Learning for Coders (2022)
+• Google Cloud ML Engineer Professional Certification (2021)
+
+NOTABLE PROJECTS
+
+Large Language Model Fine-Tuning Platform (2022-Present)
+• Built platform enabling customers to fine-tune LLMs for domain-specific tasks
+• Technologies: PyTorch, Hugging Face, AWS SageMaker, Kubernetes
+• Features: Distributed training, parameter-efficient fine-tuning (LoRA), inference optimization
+• Achievements: 50+ customers, 99.5% uptime, reduced training costs by 65%
+• Impact: Democratized LLM fine-tuning for non-experts, generated $5M+ ARR
+
+Recommendation Engine (2021-2022)
+• Built collaborative and content-based recommendation system
+• Technologies: TensorFlow, embedding techniques, ranking algorithms
+• Processed: 5M+ users, 100M+ items, 1B+ daily events
+• Metrics: 47% engagement improvement, 34% revenue increase
+• Deployed: Real-time inference serving 10K+ requests/second
+
+Advanced Computer Vision System (2020-2021)
+• Developed multi-task computer vision model for retail applications
+• Technologies: PyTorch, YOLOv8, CNNs, edge deployment
+• Capabilities: Object detection, classification, segmentation, counting
+• Accuracy: 94.2% mAP, real-time performance (30ms latency)
+• Impact: Processing 100K+ images daily for 200+ retail locations
+
+ADDITIONAL INFORMATION
+• Speaker: "Production ML Best Practices" - NeurIPS 2023, Boston AI Conference
+• Researcher: Published 2 papers on efficient fine-tuning and model compression
+• Open Source: Contributor to Hugging Face, PyTorch, and TensorFlow
+• Blog: Regularly publish ML articles on Medium (50K+ followers)
+• Languages: English (fluent), Mandarin Chinese (fluent)
+• Interests: LLMs, efficient ML, responsible AI, edge computing

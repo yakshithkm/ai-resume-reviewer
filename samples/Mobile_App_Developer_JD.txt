@@ -1,0 +1,79 @@
+MOBILE APP DEVELOPER JOB DESCRIPTION
+
+Position: Senior Mobile App Developer
+Location: Remote / San Francisco, CA
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+MobileFirst Solutions is a leading mobile development company. We create innovative apps for iOS and Android serving millions of users globally. Our portfolio includes apps in health, finance, social, and e-commerce sectors.
+
+POSITION OVERVIEW
+We're seeking a talented Mobile App Developer to lead the development of high-quality iOS and Android applications. You'll work on apps with millions of users and have the opportunity to shape product direction.
+
+KEY RESPONSIBILITIES
+• Design and develop high-quality iOS and Android applications
+• Architect mobile app solutions using modern design patterns
+• Implement user interfaces with attention to design and usability
+• Optimize app performance for different device types and OS versions
+• Implement secure authentication and data protection
+• Integrate APIs and third-party services
+• Write comprehensive unit and integration tests
+• Collaborate with product managers, designers, and backend engineers
+• Manage app releases and version updates
+• Investigate and fix bugs reported by users
+
+REQUIRED QUALIFICATIONS
+• 5+ years of mobile app development experience
+• Strong proficiency in Swift (iOS) or Kotlin (Android) or both
+• Proven experience launching and maintaining apps on App Store/Play Store
+• Deep understanding of iOS/Android design patterns and best practices
+• Experience with modern UI frameworks (SwiftUI, Jetpack Compose)
+• Knowledge of mobile networking and API integration
+• Experience with mobile databases (SQLite, Realm, Room)
+• Understanding of mobile security best practices
+• Proficiency with version control systems (Git)
+• Strong problem-solving and communication skills
+
+PREFERRED QUALIFICATIONS
+• Expert-level knowledge of both iOS and Android development
+• Experience with cross-platform frameworks (React Native, Flutter)
+• Knowledge of app performance profiling and optimization
+• Experience with CI/CD tools and automated testing
+• Understanding of push notifications and real-time data
+• Familiarity with machine learning integration in mobile apps
+• Experience with payment processing systems
+• Google Certified Associate Android Developer or Apple Certified Professional
+• Experience with app analytics and user tracking
+• Knowledge of accessibility standards and implementation
+
+TECHNICAL SKILLS REQUIRED
+Languages: Swift, Kotlin, Java, or equivalent
+iOS: SwiftUI, UIKit, or equivalent modern framework
+Android: Jetpack Compose, Material Design, or equivalent
+Networking: REST APIs, GraphQL, or equivalent
+Databases: SQLite, Realm, Room, or equivalent
+Testing: XCTest, Espresso, or equivalent testing frameworks
+Version Control: Git
+
+COMPENSATION & BENEFITS
+• Competitive salary: $130,000 - $170,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget ($3K/year)
+• Remote work flexibility
+• New device budget ($1K/year)
+• Mobile development tools budget
+
+WHAT WE'RE LOOKING FOR
+A passionate developer who creates beautiful, performant mobile applications. You should have a keen eye for user experience and the ability to write clean, maintainable code. We value continuous learning and staying current with mobile development trends.
+
+APPLICATION REQUIREMENTS
+• GitHub profile with iOS/Android projects
+• Examples of apps published on app stores
+• Performance metrics or user reviews for previous work
+• Portfolio demonstrating UI/UX implementation skills
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive engineering team.

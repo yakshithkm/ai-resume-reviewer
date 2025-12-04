@@ -1,0 +1,112 @@
+CYBERSECURITY ANALYST RESUME
+
+JORDAN MARTINEZ
+Washington, DC 20001 | (202) 555-0198 | jordan.martinez@email.com
+LinkedIn: linkedin.com/in/jordanmartinez | GitHub: github.com/jordanmartinez
+
+PROFESSIONAL SUMMARY
+Dedicated Cybersecurity Analyst with 6 years of experience protecting enterprise systems and networks from evolving cyber threats. Expertise in threat detection, incident response, vulnerability management, and security compliance. Proven ability to identify and remediate security risks while maintaining business continuity. Skilled in SIEM platforms, penetration testing, and security audits. Strong understanding of attack methodologies and defensive strategies. Passionate about staying current with emerging threats and implementing proactive security measures.
+
+TECHNICAL SKILLS
+Security Tools: Splunk, ELK Stack, Suricata, Snort, Zeek
+Penetration Testing: Burp Suite, Metasploit, Nmap, Wireshark, Hydra
+Vulnerability Assessment: Nessus, OpenVAS, Qualys, OWASP ZAP
+Cloud Security: AWS Security Hub, Azure Security Center, Google Cloud Security
+Identity & Access: Active Directory, Okta, SSO, LDAP, OAuth
+Incident Response: Malware analysis, forensics, timeline reconstruction
+Compliance: HIPAA, PCI-DSS, SOC 2, ISO 27001, GDPR
+Programming: Python, Bash, PowerShell, JavaScript
+Networking: TCP/IP, DNS, HTTP/HTTPS, VPN, Firewalls
+Operating Systems: Windows Server, Linux, macOS
+Monitoring: Prometheus, Grafana, Datadog, New Relic
+Firewalls: Palo Alto Networks, Fortinet FortiGate, Cisco ASA
+Databases: MySQL, PostgreSQL, MongoDB security
+
+PROFESSIONAL EXPERIENCE
+
+Senior Security Analyst | Enterprise Defense Corp., Washington, DC | Jun 2022 - Present
+• Monitor and analyze security events from SIEM platform processing 100M+ daily logs
+• Led incident response for 15+ security incidents with zero days to detection improvement
+• Designed and implemented threat detection rules catching 87% of simulated attacks
+• Conducted 12 penetration tests for enterprise clients finding 250+ vulnerabilities
+• Managed vulnerability assessment program reducing CVSS 9+ vulnerabilities by 92%
+• Implemented automated security scanning for 500+ applications in CI/CD pipeline
+• Developed Python scripts automating 40+ hours/month of manual security tasks
+• Mentored team of 2 junior security analysts on threat hunting and analysis
+• Created comprehensive incident response playbooks for 8 threat scenarios
+• Achieved SOC 2 Type II certification audit with zero findings
+• Implemented security awareness training reaching 2000+ employees with 95% completion
+
+Security Analyst | Digital Security Solutions, Arlington, VA | Jan 2021 - May 2022
+• Monitored and investigated security alerts from enterprise network
+• Performed vulnerability assessments discovering and prioritizing 200+ vulnerabilities
+• Conducted threat hunting campaigns identifying 5 advanced threats
+• Responded to security incidents with average response time under 15 minutes
+• Implemented network segmentation reducing attack surface by 65%
+• Trained 500+ employees on security best practices and phishing prevention
+• Created security dashboards providing real-time visibility into security posture
+• Contributed to compliance audits achieving SOC 2 Type I certification
+• Analyzed malware samples and threat intelligence to improve detection
+• Managed patch management program with 99.2% compliance rate
+
+Junior Security Analyst | TechSecure Inc., Alexandria, VA | Aug 2019 - Dec 2020
+• Analyzed security logs and investigated suspicious activities
+• Assisted with penetration testing and vulnerability assessments
+• Helped respond to security incidents and security issues
+• Documented security findings and recommendations
+• Supported compliance and audit activities
+• Created security reports and dashboards
+• Participated in threat modeling exercises
+• Learned incident response procedures and malware analysis
+
+IT Support Technician | Tech Support Plus, Arlington, VA | Jun 2018 - Jul 2019
+• Provided IT support to 200+ users
+• Managed user access and password resets
+• Installed security patches and software updates
+• Monitored systems for issues and performance
+
+EDUCATION
+Bachelor of Science in Information Security | Georgetown University, Washington, DC | 2018
+Coursework: Cybersecurity, Network Security, Cryptography, Malware Analysis, Ethical Hacking
+
+CERTIFICATIONS & TRAINING
+• Certified Ethical Hacker (CEH) - Licensed by EC-Council (2023)
+• CompTIA Security+ Certification (2022)
+• GIAC Certified Security Essentials (GSEC) (2022)
+• Certified Incident Handler (ECIH) (2021)
+• Splunk Certified User (2021)
+• OWASP Certified Secure Programmer (2021)
+• AWS Security - Specialty Certification (2020)
+• CompTIA Network+ Certification (2019)
+• Google Cloud Security Engineer Associate (In progress)
+
+NOTABLE PROJECTS
+
+Enterprise Threat Detection System (2022-Present)
+• Built SIEM infrastructure using Splunk processing 100M+ logs daily
+• Created 150+ custom detection rules with 87% precision
+• Implemented machine learning for anomaly detection
+• Achieved 73% improvement in true-positive detection rate
+• Result: Detected 15 major threats saving estimated $2M+ in potential damages
+
+Incident Response Automation Platform (2021-2022)
+• Developed Python-based incident response orchestration platform
+• Automated response procedures for 8 threat scenarios
+• Integrated with 10+ security tools for automated remediation
+• Reduced incident response time by 65% (from 4 hours to 85 minutes)
+• Result: Improved team efficiency and threat containment speed
+
+Vulnerability Management Program (2021)
+• Implemented vulnerability assessment program across 500 applications
+• Integrated Nessus, OpenVAS, and custom scanning tools
+• Created remediation workflow with automated escalation
+• Reduced high-severity vulnerabilities by 92% in 12 months
+• Result: Significantly improved security posture and compliance
+
+ADDITIONAL INFORMATION
+• Speaker: "Modern Threat Detection with SIEM" - InfoSec Congress 2023
+• Contributor: Security research and threat analysis articles (100K+ views)
+• Open Source: Contributor to security-focused projects (custom SIEM rules, detection tools)
+• Languages: English (fluent), Spanish (fluent)
+• Interests: Threat intelligence, incident response, emerging attack techniques
+• Certifications Roadmap: CISSP, SANS GIAC (GCIA, GREM)

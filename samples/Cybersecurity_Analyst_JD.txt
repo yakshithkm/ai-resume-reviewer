@@ -1,0 +1,78 @@
+CYBERSECURITY ANALYST JOB DESCRIPTION
+
+Position: Senior Cybersecurity Analyst
+Location: Remote / Washington, DC
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+CyberDefense Technologies is a leading provider of cybersecurity solutions. We protect Fortune 500 companies and government agencies from sophisticated cyber threats. Our team manages security for systems processing billions of transactions daily.
+
+POSITION OVERVIEW
+We're seeking a skilled Cybersecurity Analyst to join our security operations center. You'll be responsible for detecting, investigating, and responding to security threats. This role is critical to protecting our organization and clients from advanced threats.
+
+KEY RESPONSIBILITIES
+• Monitor and analyze security events from SIEM platforms
+• Investigate security alerts and anomalies
+• Conduct incident response and threat remediation
+• Perform vulnerability assessments and penetration testing
+• Develop and implement threat detection rules
+• Conduct threat hunting and proactive threat research
+• Analyze malware and threat intelligence
+• Create and maintain incident response playbooks
+• Support compliance and audit activities
+• Document security findings and recommendations
+
+REQUIRED QUALIFICATIONS
+• 5+ years of cybersecurity or related experience
+• Experience with SIEM platforms (Splunk, ELK, etc.)
+• Strong understanding of network protocols and concepts
+• Experience with threat detection and analysis
+• Knowledge of incident response procedures
+• Proficiency with security tools (Nmap, Wireshark, Burp Suite)
+• Understanding of malware analysis and reverse engineering basics
+• Knowledge of compliance frameworks (SOC 2, ISO 27001, HIPAA)
+• Scripting skills (Python, Bash, PowerShell)
+• Strong analytical and problem-solving skills
+
+PREFERRED QUALIFICATIONS
+• Security+ or CEH certification
+• GIAC Certified Security Essentials (GSEC) or higher
+• Experience with penetration testing
+• Knowledge of cloud security (AWS, Azure, GCP)
+• Experience with vulnerability assessment tools (Nessus, Qualys)
+• Familiarity with threat intelligence platforms
+• Experience with forensics and incident response
+• Knowledge of application security testing
+• Experience with security orchestration and automation
+• Advanced certifications (CISSP, GCIA)
+
+TECHNICAL SKILLS REQUIRED
+SIEM: Splunk, ELK Stack, or equivalent
+Networking: TCP/IP, DNS, firewalls, VPN
+Tools: Nmap, Wireshark, Metasploit, Burp Suite
+Scripting: Python, Bash, or PowerShell
+Operating Systems: Windows and Linux administration
+
+COMPENSATION & BENEFITS
+• Competitive salary: $115,000 - $150,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget ($3K/year)
+• Remote work flexibility
+• Certification exam funding
+• Security tool lab access
+
+WHAT WE'RE LOOKING FOR
+A dedicated security professional committed to protecting our organization. You should have strong analytical skills and the ability to think like an attacker. We value continuous learning and staying current with emerging threats and defensive technologies.
+
+APPLICATION REQUIREMENTS
+• Resume highlighting incident response and threat analysis experience
+• Examples of security projects or analysis
+• Evidence of security certifications or training
+• Demonstrated knowledge of SIEM platforms
+• GitHub profile with security-related projects (optional but preferred)
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive security team.

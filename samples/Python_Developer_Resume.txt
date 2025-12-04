@@ -1,0 +1,66 @@
+PYTHON DEVELOPER RESUME
+
+Emily Thompson
+Austin, TX | (512) 555-0321 | emily.thompson@email.com
+LinkedIn: linkedin.com/in/emilythompson | GitHub: github.com/ethompson
+
+PROFESSIONAL SUMMARY
+Passionate Python Developer with 5+ years building robust applications and data solutions. Expertise in backend development, automation, and scientific computing. Proficient in developing scalable systems and mentoring teams on best practices.
+
+TECHNICAL SKILLS
+Languages: Python, JavaScript, SQL, Bash, C++
+Frameworks: Django, Flask, FastAPI, Celery, asyncio
+Scientific: NumPy, Pandas, SciPy, Matplotlib, Scikit-learn, TensorFlow
+Databases: PostgreSQL, MySQL, MongoDB, Redis, SQLite
+Cloud: AWS (EC2, Lambda, S3), Google Cloud, Heroku
+Testing: Pytest, unittest, Mock, Coverage
+DevOps: Docker, Docker Compose, GitHub Actions, Jenkins
+APIs: REST, GraphQL, WebSockets, GRPC
+Web Scraping: BeautifulSoup, Scrapy, Selenium
+Code Quality: Black, Flake8, Mypy, Pylint
+
+PROFESSIONAL EXPERIENCE
+
+Senior Python Developer | Tech Innovations Austin, Austin, TX | Jan 2021 - Present
+• Led development of data processing pipeline using Pandas and NumPy processing 500M+ records
+• Built RESTful APIs using FastAPI serving 2M+ requests daily with sub-100ms latency
+• Designed and implemented background job system using Celery processing 100K jobs/day
+• Mentored team of 3 developers on Python best practices and code architecture
+• Implemented comprehensive testing suite with 90%+ code coverage using Pytest
+• Optimized Python code performance, reducing execution time by 70%
+• Deployed applications on AWS using Lambda, EC2, and containerization
+
+Python Developer | DataViz Solutions, Austin, TX | Jun 2018 - Dec 2020
+• Developed data analysis tools using NumPy, Pandas for business analytics
+• Built web scrapers using BeautifulSoup and Selenium collecting data from 100+ sources
+• Created Python packages for internal use, published on PyPI
+• Automated infrastructure and deployment tasks using Python scripts
+• Implemented real-time data processing using asyncio and WebSockets
+• Collaborated with data science team on machine learning model deployment
+
+Junior Python Developer | StartUp Dev Shop, Austin, TX | Jun 2017 - May 2018
+• Developed features for web applications using Django framework
+• Wrote unit and integration tests for Python modules
+• Assisted in database design and optimization
+• Participated in code reviews and team development meetings
+
+EDUCATION
+Bachelor of Science in Computer Engineering | University of Texas at Austin | 2017
+Relevant Coursework: Software Engineering, Data Structures, Algorithms, Database Systems
+
+CERTIFICATIONS & COURSES
+• Python Professional Certificate - Coursera (2021)
+• Advanced Python Programming - Real Python (2022)
+• Docker Mastery for Python Developers (2021)
+
+PROJECTS
+Real-time Stock Data Pipeline | Python, Pandas, Redis, PostgreSQL | 2022-2023
+Built distributed data pipeline collecting and processing stock market data in real-time. Served analytics queries for 1000+ users with < 50ms response time.
+
+Web Scraping Framework | Python, BeautifulSoup, Selenium | 2020-2021
+Developed robust web scraping framework collecting data from 100+ websites. Handled JavaScript rendering, proxy rotation, and rate limiting. Extracted 50M+ records.
+
+ADDITIONAL INFORMATION
+• Open source contributor to Python community
+• Python blog with 5K+ monthly readers
+• Speaker at Austin Python Meetup and PyCon regional

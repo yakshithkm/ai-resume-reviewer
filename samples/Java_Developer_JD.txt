@@ -1,0 +1,76 @@
+JAVA DEVELOPER JOB DESCRIPTION
+
+Position: Senior Java Developer
+Location: Remote / Boston, MA
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+Enterprise Solutions Corp provides mission-critical software to Fortune 500 companies. We process billions of transactions annually and maintain systems with strict SLA requirements.
+
+POSITION OVERVIEW
+We're looking for an experienced Java Developer to build and maintain our core platform services. You'll work on complex distributed systems serving millions of users.
+
+KEY RESPONSIBILITIES
+• Design and develop enterprise Java applications using Spring Boot
+• Build microservices and distributed systems architecture
+• Optimize application performance and JVM tuning
+• Implement multithreading and concurrent programming patterns
+• Design and implement database schemas and SQL queries
+• Build and maintain REST APIs
+• Implement monitoring, logging, and alerting
+• Write comprehensive unit and integration tests
+• Conduct code reviews and mentor junior developers
+• Troubleshoot and resolve production issues
+
+REQUIRED QUALIFICATIONS
+• 5+ years of professional Java development experience
+• Expert-level Java proficiency (Java 8+)
+• Strong experience with Spring Boot framework
+• Solid SQL and relational database knowledge
+• Understanding of microservices architecture
+• Experience with REST API design
+• Proficiency with Git and version control
+• Experience with testing frameworks (JUnit, Mockito)
+• Knowledge of design patterns and SOLID principles
+• Strong problem-solving and communication skills
+
+PREFERRED QUALIFICATIONS
+• Experience with Spring Cloud
+• Knowledge of message queues (RabbitMQ, Kafka)
+• Experience with NoSQL databases (MongoDB, Cassandra)
+• Proficiency with Docker and Kubernetes
+• Knowledge of DevOps and CI/CD pipelines
+• Experience with performance profiling and tuning
+• Familiarity with distributed systems concepts
+• Knowledge of design patterns (Saga, Event sourcing, etc.)
+• Open source contributions
+• Experience with cloud platforms (AWS, GCP, Azure)
+
+TECHNICAL SKILLS REQUIRED
+Languages: Java (expert level), SQL
+Frameworks: Spring Boot (required), Spring Cloud (preferred)
+Databases: PostgreSQL, MySQL, or Oracle
+Testing: JUnit, Mockito
+Tools: Maven or Gradle, Git
+
+COMPENSATION & BENEFITS
+• Competitive salary: $130,000 - $170,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget
+• Remote work flexibility
+• Mentorship opportunities
+
+WHAT WE'RE LOOKING FOR
+A seasoned Java engineer who cares about code quality and system reliability. You should be passionate about solving complex problems and interested in system design. We value continuous learning and collaboration.
+
+APPLICATION REQUIREMENTS
+• GitHub profile or code samples demonstrating Java expertise
+• Understanding of distributed system concepts
+• Examples of complex problems you've solved
+• Clear communication of technical decisions
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive engineering team.

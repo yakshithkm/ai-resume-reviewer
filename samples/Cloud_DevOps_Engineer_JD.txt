@@ -1,0 +1,76 @@
+CLOUD/DEVOPS ENGINEER JOB DESCRIPTION
+
+Position: Senior Cloud/DevOps Engineer
+Location: Remote / Denver, CO
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+Cloud Platforms Inc. is a leader in cloud infrastructure services. We manage cloud environments for 1000+ customers processing petabytes of data annually with strict uptime requirements.
+
+POSITION OVERVIEW
+We're seeking a skilled Cloud/DevOps Engineer to design and maintain our cloud infrastructure. You'll work on systems serving millions of users with high reliability and performance requirements.
+
+KEY RESPONSIBILITIES
+• Design and deploy scalable cloud infrastructure on AWS/GCP/Azure
+• Implement infrastructure-as-code using Terraform and CloudFormation
+• Manage and optimize Kubernetes clusters
+• Build and maintain CI/CD pipelines
+• Implement monitoring, logging, and alerting systems
+• Manage cloud costs and optimize resource usage
+• Implement security best practices and access controls
+• Automate operational tasks using scripting and tools
+• Troubleshoot and resolve infrastructure issues
+• Collaborate with development teams on deployment strategies
+
+REQUIRED QUALIFICATIONS
+• 5+ years of DevOps or cloud infrastructure experience
+• Expert-level knowledge of AWS (or GCP/Azure equivalent)
+• Strong proficiency with Docker and container orchestration
+• Experience with infrastructure-as-code tools (Terraform, CloudFormation)
+• Solid understanding of Linux and command-line operations
+• Proficiency with scripting languages (Bash, Python)
+• Experience with CI/CD tools (Jenkins, GitHub Actions, etc.)
+• Understanding of networking, DNS, and load balancing
+• Knowledge of monitoring and logging tools
+• Strong problem-solving and communication skills
+
+PREFERRED QUALIFICATIONS
+• Expert-level Kubernetes knowledge
+• Experience with Terraform at scale
+• Knowledge of GitOps principles and tools (ArgoCD, Flux)
+• Proficiency with configuration management (Ansible)
+• Experience with multi-cloud environments
+• Understanding of container security and scanning
+• Knowledge of database replication and failover
+• Experience with cost optimization
+• AWS Certified Solutions Architect or DevOps Engineer
+• Certified Kubernetes Administrator (CKA)
+
+TECHNICAL SKILLS REQUIRED
+Cloud Platforms: AWS (required), GCP or Azure (preferred)
+Container Tech: Docker (expert), Kubernetes (intermediate+)
+IaC Tools: Terraform or CloudFormation
+Scripting: Bash, Python, or PowerShell
+CI/CD: Jenkins, GitHub Actions, or equivalent
+
+COMPENSATION & BENEFITS
+• Competitive salary: $140,000 - $180,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget ($3K/year)
+• Remote work flexibility
+• Cloud certification support
+
+WHAT WE'RE LOOKING FOR
+An engineer who's passionate about reliability, automation, and infrastructure. You should be proactive, detail-oriented, and enjoy solving complex infrastructure challenges. We value continuous learning and staying current with cloud technologies.
+
+APPLICATION REQUIREMENTS
+• GitHub profile with Infrastructure-as-Code examples
+• Examples of CI/CD pipelines you've built
+• Portfolio demonstrating cloud architecture knowledge
+• Understanding of scalability and reliability principles
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive engineering team.

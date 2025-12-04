@@ -1,0 +1,60 @@
+FRONTEND DEVELOPER RESUME
+
+John Anderson
+Seattle, WA | (206) 555-0123 | john.anderson@email.com
+LinkedIn: linkedin.com/in/johnanderson | GitHub: github.com/johnanderson
+
+PROFESSIONAL SUMMARY
+Experienced Frontend Developer with 5+ years building responsive, high-performance web applications. Proficient in modern JavaScript frameworks and dedicated to creating intuitive user experiences. Strong track record of improving application performance and user satisfaction.
+
+TECHNICAL SKILLS
+Languages: JavaScript, TypeScript, HTML5, CSS3, SQL
+Frameworks & Libraries: React, Vue.js, Angular, Next.js
+Tools & Technologies: Webpack, Git, Docker, CI/CD (GitHub Actions, Jenkins)
+State Management: Redux, Vuex, Context API
+Testing: Jest, Enzyme, React Testing Library, Cypress
+UI/UX: Figma, Adobe XD, Responsive Design, Material Design, Bootstrap, Tailwind CSS
+APIs: REST, GraphQL, WebSockets
+Performance Optimization: Code splitting, Lazy loading, CDN optimization
+
+PROFESSIONAL EXPERIENCE
+
+Senior Frontend Developer | Tech Solutions Inc., Seattle, WA | Jan 2022 - Present
+• Led development of customer dashboard using React and Redux, handling 100K+ daily users
+• Improved page load time by 45% through code splitting and lazy loading optimization
+• Mentored 3 junior developers on best practices for component architecture and testing
+• Implemented automated testing suite with 85% code coverage using Jest and Cypress
+• Collaborated with UX team to redesign mobile interface, increasing mobile traffic by 60%
+
+Frontend Developer | Digital Innovations LLC, Seattle, WA | Jun 2019 - Dec 2021
+• Developed responsive web applications using React and Vue.js for Fortune 500 clients
+• Built reusable component library with 50+ components, reducing development time by 30%
+• Implemented GraphQL integration, reducing API calls by 40% and improving data fetching
+• Created comprehensive documentation and Storybook for design system components
+• Fixed critical performance issues, reducing time-to-interactive from 8s to 2.5s
+
+Junior Frontend Developer | StartUp Ventures, Seattle, WA | Jun 2018 - May 2019
+• Developed features using HTML5, CSS3, and vanilla JavaScript for e-commerce platform
+• Improved CSS architecture by implementing BEM methodology across 200+ stylesheets
+• Participated in agile development cycle with 2-week sprints and daily standups
+
+EDUCATION
+Bachelor of Science in Computer Science | University of Washington | 2018
+Coursework: Web Development, Data Structures, Database Design, Software Engineering
+
+CERTIFICATIONS & COURSES
+• React Advanced Patterns - Egghead.io (2023)
+• Google Cloud Associate Cloud Engineer (In Progress)
+• Responsive Web Design Certificate - freeCodeCamp (2019)
+
+PROJECTS
+E-Commerce Platform | React, Redux, Node.js | 2022-2023
+Developed full-stack e-commerce application with 15+ product pages, shopping cart, and payment integration. Achieved 98% Lighthouse score and mobile-first design. Users: 50K+
+
+Portfolio Website | Next.js, Tailwind CSS, GraphQL | 2023
+Personal portfolio showcasing projects with blog functionality, dark mode, and analytics integration. Deployed on Vercel with auto-deployment from GitHub.
+
+ADDITIONAL INFORMATION
+• Open source contributor (React, Vue ecosystem)
+• Tech blogging on Medium (5K+ followers)
+• Speaker at Seattle Web Dev Meetup (2023)
