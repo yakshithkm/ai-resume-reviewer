@@ -1,0 +1,111 @@
+FULL STACK DEVELOPER RESUME
+
+MICHAEL RODRIGUEZ
+Austin, TX 78701 | (512) 555-0143 | michael.rodriguez@email.com
+LinkedIn: linkedin.com/in/michaelrodriguez | GitHub: github.com/michaelrodriguez
+
+PROFESSIONAL SUMMARY
+Experienced Full Stack Developer with 6 years of expertise building scalable web applications from frontend to backend. Specialized in modern JavaScript/TypeScript ecosystems and cloud deployments. Track record of designing and implementing end-to-end solutions serving millions of users. Proficient in React, Node.js, cloud services, and DevOps practices. Strong problem-solving abilities and passion for creating seamless user experiences backed by robust APIs. Experienced in agile development and cross-functional collaboration.
+
+TECHNICAL SKILLS
+Frontend: React, Vue.js, Angular, Next.js, TypeScript, HTML5, CSS3, Tailwind CSS, Material-UI
+Backend: Node.js, Express.js, Python (Flask, Django), Java (Spring Boot)
+Databases: PostgreSQL, MongoDB, MySQL, Redis, Firebase
+APIs: REST, GraphQL, WebSockets, OpenAPI
+Cloud Services: AWS (EC2, S3, Lambda, RDS), Google Cloud, Azure, Firebase
+DevOps & CI/CD: Docker, Kubernetes, GitHub Actions, Jenkins, GitLab CI
+Authentication: JWT, OAuth 2.0, session management, SAML
+Frontend Tools: Webpack, Vite, npm, yarn, ESLint, Prettier
+Testing: Jest, React Testing Library, Cypress, Mocha, Postman
+Version Control: Git, GitHub, GitLab, Bitbucket
+Architecture: MVC, MVVM, REST, Microservices, Serverless
+Performance: Caching strategies, CDN, code splitting, lazy loading
+Monitoring: DataDog, New Relic, Sentry, ELK Stack
+
+PROFESSIONAL EXPERIENCE
+
+Senior Full Stack Developer | DigitalSoft Solutions, Austin, TX | Mar 2022 - Present
+• Architected and developed full-stack SaaS platform serving 100K+ active users
+• Built responsive React frontend with TypeScript achieving 98/100 Lighthouse score
+• Designed and implemented RESTful and GraphQL APIs handling 10K+ requests/second
+• Reduced page load time by 65% through code splitting, lazy loading, and CDN optimization
+• Implemented comprehensive test suite achieving 88% code coverage (Jest, React Testing Library)
+• Deployed microservices on Kubernetes clusters managing 20+ containerized services
+• Implemented real-time features using WebSockets supporting 50K+ concurrent connections
+• Led database optimization reducing query response time from 2.5s to 180ms
+• Mentored team of 4 junior developers on full-stack best practices
+• Implemented CI/CD pipeline reducing deployment time from 30 minutes to 5 minutes
+• Automated infrastructure provisioning using Terraform managing 200+ cloud resources
+
+Full Stack Developer | CloudStart Inc., Denver, CO | Aug 2020 - Feb 2022
+• Developed full-stack e-commerce platform processing $5M+ annual transactions
+• Built React application with complex state management (Redux, Context API)
+• Created Node.js/Express REST APIs with comprehensive authentication (JWT, OAuth 2.0)
+• Implemented PostgreSQL database schema with optimization techniques (indexing, denormalization)
+• Built real-time inventory management system using WebSockets
+• Implemented payment processing integration with Stripe and PayPal
+• Deployed applications on AWS using EC2, RDS, S3, and CloudFront
+• Achieved 99.9% uptime with load balancing and auto-scaling configurations
+• Created Docker containers and docker-compose files for local development
+• Implemented comprehensive error logging and monitoring with Sentry and DataDog
+
+Junior Full Stack Developer | TechConnect Labs, Denver, CO | Jan 2019 - Jul 2020
+• Developed features for customer management SaaS platform
+• Built React components and pages following design specifications
+• Created Node.js API endpoints for data retrieval and manipulation
+• Implemented user authentication and authorization systems
+• Participated in code reviews and learned full-stack development practices
+• Fixed 150+ bugs reported by QA team and users
+• Contributed to performance optimization efforts reducing API latency by 40%
+• Assisted with deployment and infrastructure management
+• Learned CI/CD practices and containerization with Docker
+
+Intern Full Stack Developer | WebDev Startup, Dallas, TX | Jun 2018 - Dec 2018
+• Worked on full-stack web application development
+• Learned JavaScript, React, and Node.js fundamentals
+• Assisted with feature implementation and bug fixes
+• Participated in team meetings and standups
+
+EDUCATION
+Bachelor of Science in Computer Science | University of Texas at Austin, TX | 2018
+Coursework: Web Development, Software Engineering, Database Design, Cloud Computing
+
+CERTIFICATIONS & TRAINING
+• AWS Certified Solutions Architect - Associate (2022)
+• Docker & Kubernetes: The Complete Guide - Udacity (2021)
+• The Complete JavaScript Course - Udemy (2020)
+• React - The Complete Guide - Udemy (2020)
+• Node.js - The Complete Guide - Udemy (2019)
+• Google Cloud Associate Cloud Engineer (2021)
+
+NOTABLE PROJECTS
+
+SaaS Analytics Platform (2022-Present)
+• Architecture: React + Next.js (frontend), Node.js/Express (backend), PostgreSQL (database)
+• Infrastructure: AWS (EC2, RDS, S3), Docker, Kubernetes, Terraform
+• Features: Real-time dashboards, data visualization, user management, billing
+• Achievements: 100K+ users, 98/100 Lighthouse score, 99.9% uptime
+• Technologies: TypeScript, GraphQL, Redux, Tailwind CSS, Jest, Cypress
+• Live: https://analytics-platform-example.com
+
+E-Commerce Platform (2020-2022)
+• Architecture: React (frontend), Node.js/Express (backend), PostgreSQL (database)
+• Infrastructure: AWS (EC2, RDS, S3, CloudFront), Docker, GitHub Actions
+• Features: Product catalog, shopping cart, payment processing, order tracking
+• Achievements: $5M+ transactions, 99.9% uptime, payment integration with Stripe/PayPal
+• Technologies: React, Redux, Express, PostgreSQL, Docker
+• Live: https://ecommerce-example.com
+
+Customer Portal Application (2019-2020)
+• Architecture: Vue.js (frontend), Python/Flask (backend), MongoDB (database)
+• Infrastructure: AWS, GitHub Actions CI/CD
+• Features: User dashboards, reporting, file uploads, user management
+• Achievements: 50K+ users, 95% uptime
+• Technologies: Vue.js, Flask, MongoDB, Bootstrap
+
+ADDITIONAL INFORMATION
+• Speaker: "Building Scalable Full-Stack Applications" - Austin JS Conference 2023
+• Open Source: Active contributor to popular full-stack projects (500+ GitHub stars)
+• Blog: Regular articles on full-stack development best practices (30K+ readers)
+• Languages: English (fluent), Spanish (conversational)
+• Interests: Web performance, cloud architecture, DevOps practices, emerging web technologies

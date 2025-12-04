@@ -1,0 +1,79 @@
+FULL STACK DEVELOPER JOB DESCRIPTION
+
+Position: Senior Full Stack Developer
+Location: Remote / Austin, TX
+Experience Level: 5-7 years
+
+COMPANY OVERVIEW
+TechInnovate Solutions is a fast-growing software company delivering cloud-based applications to enterprises globally. We build scalable web platforms serving millions of users across various industries.
+
+POSITION OVERVIEW
+We're seeking a talented Full Stack Developer to design and build scalable web applications. You'll work on the entire application stack from frontend to backend, handling architecture decisions, code quality, and deployment. This is an opportunity to shape product direction and impact our users.
+
+KEY RESPONSIBILITIES
+• Design and develop full-stack web applications and features
+• Build responsive user interfaces using modern frameworks
+• Architect and implement RESTful and GraphQL APIs
+• Design and optimize database schemas
+• Deploy and manage applications on cloud platforms
+• Implement automated testing and CI/CD pipelines
+• Optimize application performance and scalability
+• Collaborate with product, design, and other engineering teams
+• Participate in code reviews and architectural decisions
+• Maintain code quality and documentation
+
+REQUIRED QUALIFICATIONS
+• 5+ years of full-stack web development experience
+• Expert-level JavaScript/TypeScript proficiency
+• Strong experience with React, Vue, Angular, or equivalent frontend frameworks
+• Proficiency with Node.js, Python, Java, or equivalent backend frameworks
+• Experience with relational and NoSQL databases
+• Knowledge of REST API design and GraphQL
+• Experience with cloud platforms (AWS, Google Cloud, or Azure)
+• Proficiency with Git and version control
+• Understanding of web security best practices
+• Strong problem-solving and communication skills
+
+PREFERRED QUALIFICATIONS
+• Experience with Docker and containerization
+• Kubernetes knowledge for orchestration
+• Experience with CI/CD tools and practices
+• Knowledge of microservices architecture
+• Familiarity with cloud infrastructure (Terraform, CloudFormation)
+• Understanding of DevOps practices
+• Experience with monitoring and observability tools
+• Familiarity with Agile development methodologies
+• AWS or Google Cloud certifications
+• Open source contributions
+
+TECHNICAL SKILLS REQUIRED
+Frontend: React, Vue, Angular, or equivalent (expert level)
+Backend: Node.js, Python, Java, or equivalent (strong proficiency)
+Databases: SQL and NoSQL databases
+APIs: REST and GraphQL API design
+Cloud: AWS, Google Cloud, or Azure
+Version Control: Git and GitHub/GitLab
+
+COMPENSATION & BENEFITS
+• Competitive salary: $135,000 - $180,000 annually
+• Stock options
+• Health, dental, vision insurance
+• 401(k) matching
+• Unlimited PTO
+• Professional development budget ($3K/year)
+• Remote work flexibility
+• Home office setup budget ($1K)
+• Technology budget for tools and equipment
+
+WHAT WE'RE LOOKING FOR
+A developer who enjoys building complete solutions and owns their projects end-to-end. You should have strong fundamentals in web development with the ability to make smart architectural decisions. We value clean code, attention to performance, and continuous learning.
+
+APPLICATION REQUIREMENTS
+• GitHub profile with full-stack projects showcasing frontend and backend work
+• Examples of deployed applications
+• Demonstration of API design and database optimization skills
+• Portfolio showing architectural decision-making
+• Understanding of both frontend and backend development
+
+EQUAL OPPORTUNITY
+We're committed to building a diverse and inclusive engineering team.
