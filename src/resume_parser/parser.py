@@ -103,6 +103,8 @@ class ResumeParser:
                 cached_result = self.cache.get(file_path, content)
                 if cached_result:
                     self.section_details = cached_result
+                    # Important: set self.text from the cached result file content
+                    self.text = content
                     return self.section_details
             except:
                 pass
